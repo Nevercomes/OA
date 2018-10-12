@@ -7,7 +7,7 @@
         <!--配置连接数据库的基本操作-->
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">
-            <![CDATA[jdbc:mysql://localhost:3306/book_borrow_s?useUnicode=true&characterEncoding=utf8]]>
+            <![CDATA[jdbc:mysql://localhost:3306/yunlg_oa?useUnicode=true&characterEncoding=utf8]]>
         </property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password"></property>
@@ -24,6 +24,16 @@
         <property name="hibernate.c3p0.idle_test_period">3000</property>
         <!--指定自动生成数据表的策略-->
         <!--<property name="hbm2ddl.auto">update</property>-->
+
+        <mapping class="com.yunlg.oa.domain.model.Admin" />
+        <mapping class="com.yunlg.oa.domain.model.Staff" />
+        <mapping class="com.yunlg.oa.domain.model.AdminSignIn" />
+        <mapping class="com.yunlg.oa.domain.model.Assessment" />
+        <mapping class="com.yunlg.oa.domain.model.AssessResult" />
+        <mapping class="com.yunlg.oa.domain.model.FileMission" />
+        <mapping class="com.yunlg.oa.domain.model.FileOther" />
+        <mapping class="com.yunlg.oa.domain.model.StaffSignIn" />
+        <mapping class="com.yunlg.oa.domain.model.WorkPlan" />
 
     </session-factory>
 </hibernate-configuration>
