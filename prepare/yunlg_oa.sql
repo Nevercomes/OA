@@ -11,7 +11,7 @@
  Target Server Version : 100135
  File Encoding         : 65001
 
- Date: 12/10/2018 14:41:35
+ Date: 12/10/2018 19:44:26
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin`  (
-  `admin_id` int(11) NOT NULL,
+  `admin_id` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `numbering` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `department` int(2) NULL DEFAULT NULL COMMENT 'department 同时象征了权限等级 0代表全部 特定数字对应特定部门',
@@ -35,12 +35,12 @@ CREATE TABLE `admin`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `admin_pwd`;
 CREATE TABLE `admin_pwd`  (
-  `admin_id` int(11) NOT NULL,
+  `admin_id` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `salt` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`admin_id`) USING BTREE,
   CONSTRAINT `admin_pwd_f1` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for assess_result
@@ -62,7 +62,7 @@ CREATE TABLE `assess_result`  (
 DROP TABLE IF EXISTS `assessment`;
 CREATE TABLE `assessment`  (
   `assess_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NULL DEFAULT NULL,
+  `user_id` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `work_regular` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `work_outPlan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `work_other` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -82,28 +82,55 @@ CREATE TABLE `assessment`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Table structure for file_mission
+-- ----------------------------
+DROP TABLE IF EXISTS `file_mission`;
+CREATE TABLE `file_mission`  (
+  `file_mission_id` int(11) NOT NULL AUTO_INCREMENT,
+  `assess_id` int(11) NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`file_mission_id`) USING BTREE,
+  INDEX `file_missinon_f1`(`assess_id`) USING BTREE,
+  CONSTRAINT `file_missinon_f1` FOREIGN KEY (`assess_id`) REFERENCES `assessment` (`assess_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for file_other
+-- ----------------------------
+DROP TABLE IF EXISTS `file_other`;
+CREATE TABLE `file_other`  (
+  `file_other_id` int(11) NOT NULL,
+  `assess_id` int(11) NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`file_other_id`) USING BTREE,
+  CONSTRAINT `file_other_f1` FOREIGN KEY (`file_other_id`) REFERENCES `assessment` (`assess_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
 -- Table structure for user_info
 -- ----------------------------
 DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info`  (
-  `user_id` int(11) NOT NULL,
+  `user_id` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `department` int(2) NULL DEFAULT NULL,
   `position` int(2) NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for user_pwd
 -- ----------------------------
 DROP TABLE IF EXISTS `user_pwd`;
 CREATE TABLE `user_pwd`  (
-  `user_id` int(11) NOT NULL,
+  `user_id` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `salt` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE,
   CONSTRAINT `user_pwd_f1` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for work_plan
@@ -111,7 +138,8 @@ CREATE TABLE `user_pwd`  (
 DROP TABLE IF EXISTS `work_plan`;
 CREATE TABLE `work_plan`  (
   `plan_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NULL DEFAULT NULL,
+  `user_id` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `month` int(2) NULL DEFAULT NULL,
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `modify_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`plan_id`) USING BTREE,
