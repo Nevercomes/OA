@@ -19,5 +19,5 @@ public class WorkPlan {
     @Column(name = "content")
     private String content;
     @Column(name = "modify_time")
-    private java.sql.Time modifyTime;
+    private java.sql.Date modifyTime;
 }

@@ -39,8 +39,8 @@ public class Assessment {
     @Column(name = "month")
     private int month;
     @Column(name = "work_modify_time")
-    private java.sql.Time workModifyTime;
+    private java.sql.Date workModifyTime;
     @Column(name = "assess_modify_time")
-    private java.sql.Time assessModifyTime;
+    private java.sql.Date assessModifyTime;
 
 }

@@ -120,6 +120,17 @@
       <artifactId>lombok</artifactId>
       <version>1.16.6</version>
     </dependency>
+    <!--hash salt-->
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.10</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.10</version>
+    </dependency>
 
   </dependencies>
 

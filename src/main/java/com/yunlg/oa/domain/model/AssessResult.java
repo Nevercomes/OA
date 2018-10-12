@@ -21,5 +21,5 @@ public class AssessResult {
     @Column(name = "message")
     private String message;
     @Column(name = "modify_time")
-    private java.sql.Time modifyTime;
+    private java.sql.Date modifyTime;
 }
