@@ -25,7 +25,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = {""})
-public class AccountController {
+public class AccountController{
 
     private AccountService accountService;
 

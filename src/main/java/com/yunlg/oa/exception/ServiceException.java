@@ -1,6 +1,6 @@
 package com.yunlg.oa.exception;
 
-public abstract class ServiceException extends Exception {
+public abstract class ServiceException extends RuntimeException {
     // 异常码
     private int errorCode;
 
@@ -13,6 +13,7 @@ public abstract class ServiceException extends Exception {
     }
 
     public ServiceException() {
+
     }
 
     public ServiceException(String message) {

@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
 import java.util.List;
@@ -101,7 +102,7 @@ public class AssessmentDAOImpl extends AbstractDAO implements AssessmentDAO {
     }
 
     @Override
-    public void evaluateAssessment(Assessment assessment) throws PersistenceException {
+    public void evaluateAssessment(Assessment assessment)throws PersistenceException  {
         Session session = HibernateUtil.getSession();
         Transaction transaction = getTransaction(session);
         try {

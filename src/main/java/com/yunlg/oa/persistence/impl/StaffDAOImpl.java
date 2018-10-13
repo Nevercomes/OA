@@ -37,7 +37,7 @@ public class StaffDAOImpl extends AbstractDAO implements StaffDAO {
     }
 
     @Override
-    public void batchSaveStaff(final List<Staff> staffList, final List<StaffSignIn> staffSignInList) throws PersistenceException {
+    public void batchSaveStaff(final List<Staff> staffList, final List<StaffSignIn> staffSignInList) throws PersistenceException  {
         Session session = HibernateUtil.getSession();
         Transaction transaction = getTransaction(session);
         try {

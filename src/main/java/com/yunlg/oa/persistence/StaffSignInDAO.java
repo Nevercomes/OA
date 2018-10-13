@@ -1,6 +1,5 @@
 package com.yunlg.oa.persistence;
 
-import com.yunlg.oa.domain.model.Staff;
 import com.yunlg.oa.domain.model.StaffSignIn;
 
 import javax.persistence.PersistenceException;

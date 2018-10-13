@@ -1,6 +1,10 @@
 package com.yunlg.oa.domain;
 
+import lombok.Data;
+
+@Data
 public class Result {
+
     private String result;
     private String message;
     private Object object;
@@ -20,25 +24,5 @@ public class Result {
         String message = result.equals(RESULT_SUCCESS) ? "操作成功" : "";
         message = result.equals(RESULT_ERROR) ? "操作失败" : message;
         this.setMessage(message);
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public Object getObject() {
-        return object;
-    }
-
-    public void setObject(Object object) {
-        this.object = object;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }

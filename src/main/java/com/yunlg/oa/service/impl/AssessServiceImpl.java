@@ -48,7 +48,7 @@ public class AssessServiceImpl implements AssessService {
     public void submitAssessment(Assessment assessment) throws AssessServiceException {
         try {
             long assessId = assessment.getAssessId();
-            if(assessId == 0)
+            if (assessId == 0)
                 assessmentDAO.saveAssessment(assessment);
             else
                 assessmentDAO.updateAssessment(assessment);
@@ -62,7 +62,7 @@ public class AssessServiceImpl implements AssessService {
         try {
             List<ViewAssessment> viewAssessmentList = new ArrayList<>();
             List<ViewAssessORM> ormList = assessmentDAO.getViewResultORMList(department, month);
-            for(ViewAssessORM orm : ormList) {
+            for (ViewAssessORM orm : ormList) {
                 Assessment assessment = orm.getAssessment();
                 Staff staff = orm.getStaff();
                 ViewAssessment viewAssessment = new ViewAssessment();
@@ -92,7 +92,7 @@ public class AssessServiceImpl implements AssessService {
         try {
             List<ViewResult> viewResultList = new ArrayList<>();
             List<ViewAssessORM> ormList = assessmentDAO.getViewResultORMList(department, month);
-            for(ViewAssessORM orm : ormList) {
+            for (ViewAssessORM orm : ormList) {
                 Assessment assessment = orm.getAssessment();
                 Staff staff = orm.getStaff();
                 ViewResult viewResult = new ViewResult();

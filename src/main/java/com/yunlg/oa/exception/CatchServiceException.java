@@ -12,6 +12,7 @@ public class CatchServiceException extends RuntimeException {
     }
 
     public CatchServiceException() {
+
     }
 
     public CatchServiceException(String message) {

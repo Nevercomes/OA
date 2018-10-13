@@ -7,6 +7,7 @@ import com.yunlg.oa.domain.wrapper.ViewAssessment;
 import com.yunlg.oa.domain.wrapper.ViewResult;
 import com.yunlg.oa.exception.AssessServiceException;
 import com.yunlg.oa.exception.CatchServiceException;
+import com.yunlg.oa.exception.ExceptionMessage;
 import com.yunlg.oa.service.AssessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,14 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping(value = {"/assess"})
-public class AssessController {
+public class AssessController{
 
     private AssessService assessService;
 
@@ -41,7 +41,7 @@ public class AssessController {
             Assessment assessment = assessService.getAssessment(userId, month);
             return new ResponseEntity<>(assessment, HttpStatus.OK);
         } catch (AssessServiceException sse) {
-            throw new CatchServiceException(sse);
+            throw new CatchServiceException(ExceptionMessage.NORECORD, sse);
         }
     }
 
@@ -63,7 +63,7 @@ public class AssessController {
             List<ViewAssessment> list = assessService.viewAssessment(department, month);
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (AssessServiceException sse) {
-            throw new CatchServiceException(sse);
+            throw new CatchServiceException(ExceptionMessage.NORECORD, sse);
         }
     }
 
@@ -94,7 +94,7 @@ public class AssessController {
             }
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (AssessServiceException sse) {
-            throw new CatchServiceException(sse);
+            throw new CatchServiceException(ExceptionMessage.NORECORD, sse);
         }
     }
 }
