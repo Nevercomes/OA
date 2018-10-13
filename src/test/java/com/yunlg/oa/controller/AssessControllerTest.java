@@ -3,7 +3,9 @@ package com.yunlg.oa.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.yunlg.oa.domain.model.Assessment;
+import com.yunlg.oa.persistence.AssessResultDAO;
 import com.yunlg.oa.persistence.AssessmentDAO;
+import com.yunlg.oa.persistence.impl.AssessResultDAOImpl;
 import com.yunlg.oa.persistence.impl.AssessmentDAOImpl;
 import com.yunlg.oa.service.AssessService;
 import com.yunlg.oa.service.impl.AssessServiceImpl;
@@ -22,7 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AssessControllerTest {
 
     private AssessmentDAO assessmentDAO = new AssessmentDAOImpl();
-    private AssessService assessService = new AssessServiceImpl(assessmentDAO);
+    private AssessResultDAO assessResultDAO = new AssessResultDAOImpl();
+    private AssessService assessService = new AssessServiceImpl(assessmentDAO, assessResultDAO);
     private AssessController assessController = new AssessController(assessService);
 
     private ObjectMapper mapper = new ObjectMapper();
@@ -44,12 +47,13 @@ public class AssessControllerTest {
     public void testSubmitAssessment() throws Exception {
 
         Assessment assessment = new Assessment();
-        assessment.setAssessId(1);
+        assessment.setUserId("3901170507");
         assessment.setWorkRegular("今天值了一天的班");
-        assessment.setWorkOutPlan("今天给cz倒了很多茶");
+        assessment.setWorkOutPlan("今天给cz倒了茶");
         assessment.setWorkOther("敲了10w行代码");
         assessment.setWorkExpanse("1000");
         assessment.setWorkPlanSimple("没有计划");
+        assessment.setMonth(TimeUtil.getBeforMonth());
         assessment.setWorkModifyTime(TimeUtil.getCurrentDate());
         String requestJson = ow.writeValueAsString(assessment);
 
@@ -64,7 +68,7 @@ public class AssessControllerTest {
     @Test
     public void testEvaluateAssessment() throws Exception {
         Assessment assessment = new Assessment();
-        assessment.setAssessId(1);
+        assessment.setAssessId(2);
         assessment.setAssessDirectorScore(50.5f);
         assessment.setAssessDirectorEva("Good");
         assessment.setAssessHeadScore(60.5f);
@@ -85,10 +89,9 @@ public class AssessControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/assess/view")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .param("department", "2")
+                .param("department", "0")
                 .param("month", "9"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
-
 }

@@ -14,8 +14,6 @@ public class Admin {
     @Id
     @Column(name = "admin_id")
     private String adminId;
-    @Column(name = "numbering")
-    private String numbering;
     @Column(name = "name")
     private String name;
     @Column(name = "department")

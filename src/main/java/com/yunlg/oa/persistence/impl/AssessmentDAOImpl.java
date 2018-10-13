@@ -1,6 +1,7 @@
 package com.yunlg.oa.persistence.impl;
 
 import com.yunlg.oa.domain.model.Assessment;
+import com.yunlg.oa.domain.orm.ViewAssessORM;
 import com.yunlg.oa.persistence.AbstractDAO;
 import com.yunlg.oa.persistence.AssessmentDAO;
 import com.yunlg.oa.utils.HibernateUtil;
@@ -117,6 +118,33 @@ public class AssessmentDAOImpl extends AbstractDAO implements AssessmentDAO {
             query.executeUpdate();
             session.flush();
             transaction.commit();
+        } catch (RuntimeException e) {
+            transaction.rollback();
+            throw new PersistenceException(e);
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public List<ViewAssessORM> getViewResultORMList(int department, int month) throws PersistenceException {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = getTransaction(session);
+        try {
+            String hql;
+            if(department == 0) {
+                hql = "select new com.yunlg.oa.domain.orm.ViewAssessORM(ss, staff) from Assessment ss, Staff staff where ss.userId=staff.userId" +
+                " order by ss.assessHeadScore+ss.assessDirectorScore desc ";
+            } else {
+                hql = "select new com.yunlg.oa.domain.orm.ViewAssessORM(ss, staff) " +
+                        "from Assessment ss, Staff staff where ss.month=" + month + " and ss.userId=staff.userId and staff.department=" + department +
+                " order by ss.assessHeadScore+ss.assessDirectorScore desc ";
+            }
+            Query query = session.createQuery(hql);
+            List<ViewAssessORM> ormList = query.list();
+            session.flush();
+            transaction.commit();
+            return ormList;
         } catch (RuntimeException e) {
             transaction.rollback();
             throw new PersistenceException(e);

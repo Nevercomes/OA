@@ -9,7 +9,7 @@ public class StaffSignInDAOImplTest {
 
     @Test
     public void testStaffSignIn() {
-       System.out.println(staffSignInDAO.staffSignIn("3901170505", "123456"));
+       System.out.println(staffSignInDAO.getStaffSignIn("3901170505"));
     }
 
 }

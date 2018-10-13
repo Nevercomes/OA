@@ -18,8 +18,8 @@ public class AssessResult {
     private int department;
     @Column(name = "month")
     private int month;
-    @Column(name = "message")
-    private String message;
+    @Column(name = "words")
+    private String words;
     @Column(name = "modify_time")
     private java.sql.Date modifyTime;
 }
