@@ -39,13 +39,53 @@ public class AccountController{
         return "login.jsp";
     }
 
-    @RequestMapping(value = "/login/staff", method = RequestMethod.POST)
-    public ResponseEntity<Staff> staffLogin(
-            @RequestParam(value = "userId") String userId,
-            @RequestParam(value = "password") String password) {
+//    @RequestMapping(value = "/staff", method = RequestMethod.POST)
+//    public ResponseEntity<Staff> staffLogin(
+//            @RequestParam(value = "userId") String userId,
+//            @RequestParam(value = "password") String password,
+//            ModelMap modelMap) {
+//        try {
+//            Staff staff = accountService.staffLogin(userId, password);
+//            modelMap.addAttribute("userId", staff.getUserId());
+//            modelMap.addAttribute("name", staff.getName());
+//            modelMap.addAttribute("department", staff.getDepartment());
+//            modelMap.addAttribute("position", staff.getPosition());
+//            return new ResponseEntity<>(staff, HttpStatus.OK);
+//        } catch (AccountServiceException ae) {
+//            throw new CatchServiceException(ae);
+//        }
+//    }
+
+//    @RequestMapping(value = "/staff", method = RequestMethod.POST)
+//    public ModelAndView staffLogin(
+//            @RequestParam(value = "userId") String userId,
+//            @RequestParam(value = "password") String password,
+//            ModelMap modelMap) {
+//        try {
+//            Staff staff = accountService.staffLogin(userId, password);
+//            modelMap.addAttribute("userId", staff.getUserId());
+//            modelMap.addAttribute("name", staff.getName());
+//            modelMap.addAttribute("department", staff.getDepartment());
+//            modelMap.addAttribute("position", staff.getPosition());
+//            return new ModelAndView("staff.jsp");
+//        } catch (AccountServiceException ae) {
+//            throw new CatchServiceException(ae);
+//        }
+//    }
+
+    @RequestMapping(value = "/staff", method = RequestMethod.POST)
+    public ModelAndView staffLogin(ModelMap modelMap) {
         try {
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String userId = userDetails.getUsername();
+            String password = userDetails.getPassword();
+            System.out.println(userId);
             Staff staff = accountService.staffLogin(userId, password);
-            return new ResponseEntity<>(staff, HttpStatus.OK);
+            modelMap.addAttribute("userId", staff.getUserId());
+            modelMap.addAttribute("name", staff.getName());
+            modelMap.addAttribute("department", staff.getDepartment());
+            modelMap.addAttribute("position", staff.getPosition());
+            return new ModelAndView("staff.jsp");
         } catch (AccountServiceException ae) {
             throw new CatchServiceException(ae);
         }
