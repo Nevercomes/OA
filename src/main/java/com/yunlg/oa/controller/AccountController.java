@@ -34,7 +34,12 @@ public class AccountController{
         this.accountService = accountService;
     }
 
-    @RequestMapping(value = "/login/staff", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String login() {
+        return "login.jsp";
+    }
+
+    @RequestMapping(value = "/login/staff", method = RequestMethod.POST)
     public ResponseEntity<Staff> staffLogin(
             @RequestParam(value = "userId") String userId,
             @RequestParam(value = "password") String password) {
@@ -46,7 +51,7 @@ public class AccountController{
         }
     }
 
-    @RequestMapping(value = "/login/admin", method = RequestMethod.GET)
+    @RequestMapping(value = "/login/admin", method = RequestMethod.POST)
     public ResponseEntity<Admin> adminLogin(
             @RequestParam(value = "userId") String userId,
             @RequestParam(value = "password") String password,
@@ -107,7 +112,7 @@ public class AccountController{
         }
     }
 
-    @RequestMapping(value = "modify/force", method = RequestMethod.GET)
+    @RequestMapping(value = "modify/force", method = RequestMethod.POST)
     public ResponseEntity<Result> forceModifyStaff(
             @RequestParam(value = "userId") String userId) {
         try {
@@ -118,7 +123,7 @@ public class AccountController{
         }
     }
 
-    @RequestMapping(value = "modify/force/admin", method = RequestMethod.GET)
+    @RequestMapping(value = "modify/force/admin", method = RequestMethod.POST)
     public ResponseEntity<Result> forceModifyAdmin(
             @RequestParam(value = "userId") String userId) {
         try {
