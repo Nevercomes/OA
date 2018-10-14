@@ -12,7 +12,7 @@
 		<div class="logo">
 			<img src="image/logo.png" alt="logo" style="width: 80%;">
 		</div>
-		<form action="<%=request.getContextPath()%>/login/staff" id="form" method="post">
+		<form action="staff" id="form" method="post">
 			<div class="username">
 				<img src="image/person.png" alt="person" class="ico">
 				<input type="text" name="userId" placeholder="请输入账号" class="input" id="input1">

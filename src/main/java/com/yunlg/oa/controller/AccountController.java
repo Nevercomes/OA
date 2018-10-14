@@ -15,15 +15,17 @@ import com.yunlg.oa.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 @Controller
+@SessionAttributes({"userId", "name", "department", "position"})
 @RequestMapping(value = {""})
 public class AccountController{
 
@@ -56,30 +58,12 @@ public class AccountController{
 //        }
 //    }
 
-//    @RequestMapping(value = "/staff", method = RequestMethod.POST)
-//    public ModelAndView staffLogin(
-//            @RequestParam(value = "userId") String userId,
-//            @RequestParam(value = "password") String password,
-//            ModelMap modelMap) {
-//        try {
-//            Staff staff = accountService.staffLogin(userId, password);
-//            modelMap.addAttribute("userId", staff.getUserId());
-//            modelMap.addAttribute("name", staff.getName());
-//            modelMap.addAttribute("department", staff.getDepartment());
-//            modelMap.addAttribute("position", staff.getPosition());
-//            return new ModelAndView("staff.jsp");
-//        } catch (AccountServiceException ae) {
-//            throw new CatchServiceException(ae);
-//        }
-//    }
-
     @RequestMapping(value = "/staff", method = RequestMethod.POST)
-    public ModelAndView staffLogin(ModelMap modelMap) {
+    public ModelAndView staffLogin(
+            @RequestParam(value = "userId") String userId,
+            @RequestParam(value = "password") String password,
+            ModelMap modelMap) {
         try {
-            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String userId = userDetails.getUsername();
-            String password = userDetails.getPassword();
-            System.out.println(userId);
             Staff staff = accountService.staffLogin(userId, password);
             modelMap.addAttribute("userId", staff.getUserId());
             modelMap.addAttribute("name", staff.getName());
@@ -90,6 +74,24 @@ public class AccountController{
             throw new CatchServiceException(ae);
         }
     }
+
+//    @RequestMapping(value = "/staff", method = RequestMethod.POST)
+//    public ModelAndView staffLogin(ModelMap modelMap) {
+//        try {
+//            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            String userId = userDetails.getUsername();
+//            String password = userDetails.getPassword();
+//            System.out.println(userId);
+//            Staff staff = accountService.staffLogin(userId, password);
+//            modelMap.addAttribute("userId", staff.getUserId());
+//            modelMap.addAttribute("name", staff.getName());
+//            modelMap.addAttribute("department", staff.getDepartment());
+//            modelMap.addAttribute("position", staff.getPosition());
+//            return new ModelAndView("staff.jsp");
+//        } catch (AccountServiceException ae) {
+//            throw new CatchServiceException(ae);
+//        }
+//    }
 
     @RequestMapping(value = "/login/admin", method = RequestMethod.POST)
     public ResponseEntity<Admin> adminLogin(
