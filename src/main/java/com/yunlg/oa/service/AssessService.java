@@ -20,4 +20,6 @@ public interface AssessService {
     List<ViewResult> getViewResultList(int department, int month) throws AssessServiceException;
 
     AssessResult getAssessResult(int department, int month) throws AssessServiceException;
+
+    void saveAssessResult(int department, int month, String words) throws AssessServiceException;
 }

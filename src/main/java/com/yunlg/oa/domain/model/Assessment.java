@@ -42,5 +42,7 @@ public class Assessment {
     private java.sql.Date workModifyTime;
     @Column(name = "assess_modify_time")
     private java.sql.Date assessModifyTime;
+    @Column(name = "submit")
+    private int submit;
 
 }

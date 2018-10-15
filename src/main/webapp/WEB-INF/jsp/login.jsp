@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/login.css">
-	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="plugins/jquery/jquery-3.2.1.min.js"></script>
 </head>
 <body ondragstart="return false" onload="f()">
 	<img src="image/bg.jpg" alt="bg" class="bg">
@@ -26,5 +26,5 @@
 		</form>
 	</div>
 </body>
-<script src="js/login.js"></script>
+<script src="js/account/login.js"></script>
 </html>

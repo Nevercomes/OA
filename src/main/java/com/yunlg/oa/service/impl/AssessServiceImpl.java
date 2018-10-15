@@ -96,7 +96,7 @@ public class AssessServiceImpl implements AssessService {
                 Assessment assessment = orm.getAssessment();
                 Staff staff = orm.getStaff();
                 ViewResult viewResult = new ViewResult();
-                viewResult.setName(staff.getName());
+                viewResult.setStaffName(staff.getName());
                 viewResult.setDepartment(staff.getDepartment());
                 viewResult.setPosition(staff.getPosition());
                 viewResult.setScore(ScoreUtil.getFinalScore(assessment.getAssessHeadScore(), assessment.getAssessDirectorScore()));
@@ -112,6 +112,15 @@ public class AssessServiceImpl implements AssessService {
     public AssessResult getAssessResult(int department, int month) throws AssessServiceException {
         try {
             return assessResultDAO.getAssessResult(department, month);
+        } catch (PersistenceException pe) {
+            throw new AssessServiceException(pe);
+        }
+    }
+
+    @Override
+    public void saveAssessResult(int department, int month, String words) throws AssessServiceException {
+        try {
+            assessResultDAO.updateAssessResult(department, month, words);
         } catch (PersistenceException pe) {
             throw new AssessServiceException(pe);
         }

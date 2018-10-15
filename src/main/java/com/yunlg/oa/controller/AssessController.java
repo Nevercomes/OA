@@ -24,7 +24,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = {"/assess"})
-public class AssessController{
+public class AssessController {
 
     private AssessService assessService;
 
@@ -77,7 +77,7 @@ public class AssessController{
         }
     }
 
-    @RequestMapping(value = "/view/result", method = RequestMethod.GET)
+    @RequestMapping(value = "result/view", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> viewAssessResult(
             @RequestParam(value = "department") int department,
             @RequestParam(value = "month") int month) {
@@ -95,6 +95,18 @@ public class AssessController{
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (AssessServiceException sse) {
             throw new CatchServiceException(ExceptionMessage.NORECORD, sse);
+        }
+    }
+
+    public ResponseEntity<Result> publicAssessResult(
+            @RequestParam(value = "department") int department,
+            @RequestParam(value = "month") int month,
+            @RequestParam(value = "words") String words) {
+        try {
+            assessService.saveAssessResult(department, month, words);
+            return new ResponseEntity<>(new Result(Result.RESULT_SUCCESS), HttpStatus.OK);
+        } catch (AssessServiceException sse) {
+            throw new CatchServiceException(sse);
         }
     }
 }
