@@ -23,11 +23,10 @@ public class AssessmentDAOImpl extends AbstractDAO implements AssessmentDAO {
         try {
             String hql = "from Assessment where userId='" + userId + "' and month=" + month;
             Query query = session.createQuery(hql);
-            query.setMaxResults(1);
-            Assessment assessment = (Assessment) query.uniqueResult();
+            List<Assessment> list = query.list();
             session.flush();
             transaction.commit();
-            return assessment;
+            return list.size() == 0 ? null : list.get(0);
         } catch (RuntimeException e) {
             throw new PersistenceException(e);
         } finally {

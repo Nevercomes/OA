@@ -32,4 +32,20 @@ public class DepartmentMapping {
                 return 0;
         }
     }
+
+    public static String getDepartmentStr(Department department) {
+        switch (department) {
+            case ALL:
+                return "中心全体";
+            case RD:
+                return "研发部";
+            case NETWORKS:
+                return "网络部";
+            case ART:
+                return "美工部";
+            default:
+                return "中心全体";
+        }
+    }
 }
+

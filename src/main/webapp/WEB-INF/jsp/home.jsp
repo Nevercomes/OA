@@ -1,9 +1,18 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="css/home.css">
-	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="plugins/jquery/jquery-3.2.1.min.js"></script>
+	<script src="plugins/json/jquery.json.min.js"></script>
+	<script src="js/assess/assessStaff.js"></script>
+	<script src="js/utils/enum.js"></script>
+	<script src="js/utils/timeUtil.js"></script>
+	<script src="js/utils/session.js"></script>
+	<script src="js/account/login.js"></script>
 </head>
 <body ondragstart="return false" onload="f()">
 	<div class="top">
@@ -23,8 +32,9 @@
 		<div class="contest">
 			<div class="top_contest">
 				<span>信息技术中心</span>
-				<span>游戏部</span>
-				<span>嘿嘿哈</span>
+				<span id="g_department">${sessionScope.department}</span>
+				<span id="g_name">${sessionScope.name}</span>
+				<span id="g_id">${sessionScope.userId}</span>
 			</div>
 			<div class="buttom_contest">
 				<span id="toFill">填写考核表</span>
@@ -35,7 +45,7 @@
 	</div>
 	<div class="main">
 		<div class="board">
-			<form action="" id="fill" style="">
+			<form id="fill" style="">
 				<div class="to_fill">
 					<label for="assessWorkRegular">常规工作</label>
 					<textarea name="assessWorkRegular" id="assessWorkRegular" cols="30" rows="1"></textarea>
@@ -61,7 +71,7 @@
 						<span style="position: relative;left: 2px;" id="filename">文件上传</span>
 						<input type="file" class="real_file">
 					</div>
-					<input type="submit" class="fill_b">
+					<input type="button" class="fill_b" onclick="submitAssessment()" value="提交">
 				</div>
 			</form>
 			<form id="see" style="display: none;">

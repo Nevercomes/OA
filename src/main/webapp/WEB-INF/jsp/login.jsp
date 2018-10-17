@@ -22,7 +22,7 @@
 				<input type="password" name="password" placeholder="请输入密码" class="input" id="input2">
 			</div>
 			<div class="forget"><a style="float: right;">忘记密码</a></div>
-			<input type="submit" value="登录" class="button">
+			<input type="submit" value="登录" class="button" onclick="getSession()">
 		</form>
 	</div>
 </body>

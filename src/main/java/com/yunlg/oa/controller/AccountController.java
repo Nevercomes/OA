@@ -12,11 +12,10 @@ import com.yunlg.oa.domain.wrapper.StaffModifyPwd;
 import com.yunlg.oa.exception.AccountServiceException;
 import com.yunlg.oa.exception.CatchServiceException;
 import com.yunlg.oa.service.AccountService;
+import com.yunlg.oa.utils.DepartmentMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -41,22 +40,21 @@ public class AccountController{
         return "login.jsp";
     }
 
-//    @RequestMapping(value = "/staff", method = RequestMethod.POST)
-//    public ResponseEntity<Staff> staffLogin(
-//            @RequestParam(value = "userId") String userId,
-//            @RequestParam(value = "password") String password,
-//            ModelMap modelMap) {
-//        try {
-//            Staff staff = accountService.staffLogin(userId, password);
+    // 这是假的
+    @RequestMapping(value = "/session", method = RequestMethod.GET)
+    public ResponseEntity<Staff> getSession(
+            @RequestParam(value = "userId") String userId) {
+        try {
+            Staff staff = accountService.getStaff(userId);
 //            modelMap.addAttribute("userId", staff.getUserId());
 //            modelMap.addAttribute("name", staff.getName());
 //            modelMap.addAttribute("department", staff.getDepartment());
 //            modelMap.addAttribute("position", staff.getPosition());
-//            return new ResponseEntity<>(staff, HttpStatus.OK);
-//        } catch (AccountServiceException ae) {
-//            throw new CatchServiceException(ae);
-//        }
-//    }
+            return new ResponseEntity<>(staff, HttpStatus.OK);
+        } catch (AccountServiceException ae) {
+            throw new CatchServiceException(ae);
+        }
+    }
 
     @RequestMapping(value = "/staff", method = RequestMethod.POST)
     public ModelAndView staffLogin(
@@ -67,9 +65,9 @@ public class AccountController{
             Staff staff = accountService.staffLogin(userId, password);
             modelMap.addAttribute("userId", staff.getUserId());
             modelMap.addAttribute("name", staff.getName());
-            modelMap.addAttribute("department", staff.getDepartment());
+            modelMap.addAttribute("department", DepartmentMapping.getDepartmentStr(DepartmentMapping.getDepartment(staff.getDepartment())));
             modelMap.addAttribute("position", staff.getPosition());
-            return new ModelAndView("staff.jsp");
+            return new ModelAndView("home.jsp");
         } catch (AccountServiceException ae) {
             throw new CatchServiceException(ae);
         }

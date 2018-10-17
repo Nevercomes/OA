@@ -7,6 +7,7 @@ import com.yunlg.oa.domain.orm.ViewAssessORM;
 import com.yunlg.oa.domain.wrapper.ViewAssessment;
 import com.yunlg.oa.domain.wrapper.ViewResult;
 import com.yunlg.oa.exception.AssessServiceException;
+import com.yunlg.oa.exception.ExceptionMessage;
 import com.yunlg.oa.persistence.AssessResultDAO;
 import com.yunlg.oa.persistence.AssessmentDAO;
 import com.yunlg.oa.service.AssessService;
@@ -34,6 +35,9 @@ public class AssessServiceImpl implements AssessService {
     public Assessment getAssessment(String userId, int month) throws AssessServiceException {
         try {
             Assessment assessment = assessmentDAO.getAssessment(userId, month);
+            if(assessment == null) {
+                return null;
+            }
             assessment.setAssessHeadEva(null);
             assessment.setAssessHeadScore(0);
             assessment.setAssessDirectorEva(null);

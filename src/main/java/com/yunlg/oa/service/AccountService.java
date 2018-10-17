@@ -26,4 +26,6 @@ public interface AccountService {
     void forceModifyStaff(String userId) throws AccountServiceException;
 
     void forceModifyAdmin(String userId) throws AccountServiceException;
+
+    Staff getStaff(String userId) throws AccountServiceException;
 }

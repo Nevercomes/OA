@@ -151,4 +151,13 @@ public class AccountServiceImpl implements AccountService {
             throw new AccountServiceException(ExceptionMessage.NOACCOUNT, pe);
         }
     }
+
+    @Override
+    public Staff getStaff(String userId) throws AccountServiceException {
+        try {
+            return staffDAO.getStaff(userId);
+        } catch (PersistenceException pe) {
+            throw new AccountServiceException(ExceptionMessage.NOACCOUNT, pe);
+        }
+    }
 }

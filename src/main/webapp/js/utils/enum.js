@@ -33,3 +33,16 @@ if(typeof POSITIONSTR == undefined){
     POSITIONSTR.VICEHEAD = "副部长";
     POSITIONSTR.GROUP = "组长";
 }
+
+function getDeaprtmentStr(code) {
+    switch (code) {
+        case 0:
+            return DEPARTMENTSTR.ALL;
+        case 1:
+            return DEPARTMENTSTR.RD;
+        case 2:
+            return DEPARTMENTSTR.NETWORKS;
+        case 3:
+            return DEPARTMENTSTR.ART;
+    }
+}
