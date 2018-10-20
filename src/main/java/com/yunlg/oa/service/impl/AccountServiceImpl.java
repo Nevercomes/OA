@@ -1,7 +1,5 @@
 package com.yunlg.oa.service.impl;
 
-import com.yunlg.oa.domain.model.Admin;
-import com.yunlg.oa.domain.model.AdminSignIn;
 import com.yunlg.oa.domain.model.Staff;
 import com.yunlg.oa.domain.model.StaffSignIn;
 import com.yunlg.oa.domain.wrapper.AdminModifyPwd;
@@ -54,35 +52,35 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    @Override
-    public Admin adminLogin(String userId, String password, String numbering) throws AccountServiceException {
-        try {
-            AdminSignIn adminSignIn = adminSignInDAO.getAdminSignIn(userId, numbering);
-            if (adminSignIn == null)
-                throw new AccountServiceException(ExceptionMessage.NOACCOUNT);
-            Admin admin = new Admin();
-            if (HashSalt.verify(adminSignIn.getPassword(), password, adminSignIn.getSalt()))
-                admin = adminDAO.getAdmin(userId);
-            if (admin == null)
-                throw new AccountServiceException(ExceptionMessage.FALSEPASSWORD);
-            return admin;
-        } catch (PersistenceException pe) {
-            throw new AccountServiceException(pe);
-        }
-    }
+//    @Override
+//    public Admin adminLogin(String userId, String password, String numbering) throws AccountServiceException {
+//        try {
+//            AdminSignIn adminSignIn = adminSignInDAO.getAdminSignIn(userId, numbering);
+//            if (adminSignIn == null)
+//                throw new AccountServiceException(ExceptionMessage.NOACCOUNT);
+//            Admin admin = new Admin();
+//            if (HashSalt.verify(adminSignIn.getPassword(), password, adminSignIn.getSalt()))
+//                admin = adminDAO.getAdmin(userId);
+//            if (admin == null)
+//                throw new AccountServiceException(ExceptionMessage.FALSEPASSWORD);
+//            return admin;
+//        } catch (PersistenceException pe) {
+//            throw new AccountServiceException(pe);
+//        }
+//    }
 
-    @Override
-    public String adminRegister(Admin admin, AdminSignIn adminSignIn) throws AccountServiceException {
-        try {
-            String numbering = NumberingRandom.getAdminNumbering();
-            AdminSignIn adminSignIn1 = HashSalt.addSalt(adminSignIn);
-            adminSignIn1.setNumbering(numbering);
-            adminDAO.saveAdmin(admin, adminSignIn1);
-            return numbering;
-        } catch (PersistenceException pe) {
-            throw new AccountServiceException(ExceptionMessage.ALREADYHAVEACCOUNT, pe);
-        }
-    }
+//    @Override
+//    public String adminRegister(Admin admin, AdminSignIn adminSignIn) throws AccountServiceException {
+//        try {
+//            String numbering = NumberingRandom.getAdminNumbering();
+//            AdminSignIn adminSignIn1 = HashSalt.addSalt(adminSignIn);
+//            adminSignIn1.setNumbering(numbering);
+//            adminDAO.saveAdmin(admin, adminSignIn1);
+//            return numbering;
+//        } catch (PersistenceException pe) {
+//            throw new AccountServiceException(ExceptionMessage.ALREADYHAVEACCOUNT, pe);
+//        }
+//    }
 
     @Override
     public void batchRegister(List<Staff> staffList, List<StaffSignIn> staffSignInList) throws AccountServiceException {
@@ -111,22 +109,22 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    @Override
-    public boolean adminModifyPwd(AdminModifyPwd adminModifyPwd) throws AccountServiceException {
-        try {
-            AdminSignIn adminSignIn = adminSignInDAO.getAdminSignIn(adminModifyPwd.getAdminId(), adminModifyPwd.getNumbering());
-            if (adminSignIn == null)
-                throw new AccountServiceException(ExceptionMessage.NOACCOUNT);
-            if (HashSalt.verify(adminSignIn.getPassword(), adminModifyPwd.getOldPassword(), adminSignIn.getSalt())) {
-                adminSignIn.setPassword(adminModifyPwd.getNewPassword());
-                adminSignInDAO.updateAdminSignIn(HashSalt.addSalt(adminSignIn));
-                return true;
-            }
-            return false;
-        } catch (PersistenceException pe) {
-            throw new AccountServiceException(pe);
-        }
-    }
+//    @Override
+//    public boolean adminModifyPwd(AdminModifyPwd adminModifyPwd) throws AccountServiceException {
+//        try {
+//            AdminSignIn adminSignIn = adminSignInDAO.getAdminSignIn(adminModifyPwd.getAdminId(), adminModifyPwd.getNumbering());
+//            if (adminSignIn == null)
+//                throw new AccountServiceException(ExceptionMessage.NOACCOUNT);
+//            if (HashSalt.verify(adminSignIn.getPassword(), adminModifyPwd.getOldPassword(), adminSignIn.getSalt())) {
+//                adminSignIn.setPassword(adminModifyPwd.getNewPassword());
+//                adminSignInDAO.updateAdminSignIn(HashSalt.addSalt(adminSignIn));
+//                return true;
+//            }
+//            return false;
+//        } catch (PersistenceException pe) {
+//            throw new AccountServiceException(pe);
+//        }
+//    }
 
     @Override
     public void forceModifyStaff(String userId) throws AccountServiceException {
@@ -140,17 +138,17 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    @Override
-    public void forceModifyAdmin(String userId) throws AccountServiceException {
-        try {
-            AdminSignIn adminSignIn = new AdminSignIn();
-            adminSignIn.setAdminId(userId);
-            adminSignIn.setPassword("yunlugu000");
-            adminSignInDAO.forceUpdateAdminSignIn(HashSalt.addSalt(adminSignIn));
-        } catch (PersistenceException pe) {
-            throw new AccountServiceException(ExceptionMessage.NOACCOUNT, pe);
-        }
-    }
+//    @Override
+//    public void forceModifyAdmin(String userId) throws AccountServiceException {
+//        try {
+//            AdminSignIn adminSignIn = new AdminSignIn();
+//            adminSignIn.setAdminId(userId);
+//            adminSignIn.setPassword("yunlugu000");
+//            adminSignInDAO.forceUpdateAdminSignIn(HashSalt.addSalt(adminSignIn));
+//        } catch (PersistenceException pe) {
+//            throw new AccountServiceException(ExceptionMessage.NOACCOUNT, pe);
+//        }
+//    }
 
     @Override
     public Staff getStaff(String userId) throws AccountServiceException {

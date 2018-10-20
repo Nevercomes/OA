@@ -1,6 +1,5 @@
 package com.yunlg.oa.persistence.impl;
 
-import com.yunlg.oa.domain.model.AdminSignIn;
 import com.yunlg.oa.persistence.AbstractDAO;
 import com.yunlg.oa.persistence.AdminSignInDAO;
 import com.yunlg.oa.utils.HibernateUtil;

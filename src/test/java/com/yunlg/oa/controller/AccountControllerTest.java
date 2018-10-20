@@ -2,8 +2,6 @@ package com.yunlg.oa.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.yunlg.oa.domain.model.Admin;
-import com.yunlg.oa.domain.model.AdminSignIn;
 import com.yunlg.oa.domain.model.Staff;
 import com.yunlg.oa.domain.model.StaffSignIn;
 import com.yunlg.oa.domain.wrapper.AdminModifyPwd;

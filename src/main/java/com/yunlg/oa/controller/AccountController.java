@@ -1,8 +1,6 @@
 package com.yunlg.oa.controller;
 
 import com.yunlg.oa.domain.Result;
-import com.yunlg.oa.domain.model.Admin;
-import com.yunlg.oa.domain.model.AdminSignIn;
 import com.yunlg.oa.domain.model.Staff;
 import com.yunlg.oa.domain.model.StaffSignIn;
 import com.yunlg.oa.domain.wrapper.AdminModifyPwd;
@@ -26,7 +24,7 @@ import java.util.List;
 @Controller
 @SessionAttributes({"userId", "name", "department", "position"})
 @RequestMapping(value = {""})
-public class AccountController{
+public class AccountController {
 
     private AccountService accountService;
 
@@ -91,30 +89,30 @@ public class AccountController{
 //        }
 //    }
 
-    @RequestMapping(value = "/login/admin", method = RequestMethod.POST)
-    public ResponseEntity<Admin> adminLogin(
-            @RequestParam(value = "userId") String userId,
-            @RequestParam(value = "password") String password,
-            @RequestParam(value = "numbering") String numbering) {
-        try {
-            Admin admin = accountService.adminLogin(userId, password, numbering);
-            return new ResponseEntity<>(admin, HttpStatus.OK);
-        } catch (AccountServiceException ae) {
-            throw new CatchServiceException(ae);
-        }
-    }
+//    @RequestMapping(value = "/login/admin", method = RequestMethod.POST)
+//    public ResponseEntity<Admin> adminLogin(
+//            @RequestParam(value = "userId") String userId,
+//            @RequestParam(value = "password") String password,
+//            @RequestParam(value = "numbering") String numbering) {
+//        try {
+//            Admin admin = accountService.adminLogin(userId, password, numbering);
+//            return new ResponseEntity<>(admin, HttpStatus.OK);
+//        } catch (AccountServiceException ae) {
+//            throw new CatchServiceException(ae);
+//        }
+//    }
 
-    @RequestMapping(value = "/register/admin", method = RequestMethod.POST)
-    public ResponseEntity<String> adminRegister(@RequestBody AdminRegister adminRegister) {
-        try {
-            Admin admin = adminRegister.getAdmin();
-            AdminSignIn adminSignIn = adminRegister.getAdminSignIn();
-            String numbering = accountService.adminRegister(admin, adminSignIn);
-            return new ResponseEntity<>(numbering, HttpStatus.OK);
-        } catch (AccountServiceException ae) {
-            throw new CatchServiceException(ae);
-        }
-    }
+//    @RequestMapping(value = "/register/admin", method = RequestMethod.POST)
+//    public ResponseEntity<String> adminRegister(@RequestBody AdminRegister adminRegister) {
+//        try {
+//            Admin admin = adminRegister.getAdmin();
+//            AdminSignIn adminSignIn = adminRegister.getAdminSignIn();
+//            String numbering = accountService.adminRegister(admin, adminSignIn);
+//            return new ResponseEntity<>(numbering, HttpStatus.OK);
+//        } catch (AccountServiceException ae) {
+//            throw new CatchServiceException(ae);
+//        }
+//    }
 
     @RequestMapping(value = "register/batch", method = RequestMethod.POST)
     public ResponseEntity<Result> batchRegister(@RequestBody BatchRegister batchRegister) {
@@ -131,7 +129,7 @@ public class AccountController{
     @RequestMapping(value = "modify/staff", method = RequestMethod.POST)
     public ResponseEntity<Result> modifyStaffPassword(@RequestBody StaffModifyPwd staffModifyPwd) {
         try {
-            if(accountService.staffModifyPwd(staffModifyPwd))
+            if (accountService.staffModifyPwd(staffModifyPwd))
                 return new ResponseEntity<>(new Result(Result.RESULT_SUCCESS), HttpStatus.OK);
             else
                 return new ResponseEntity<>(new Result(Result.RESULT_ERROR), HttpStatus.OK);
@@ -140,17 +138,17 @@ public class AccountController{
         }
     }
 
-    @RequestMapping(value = "modify/admin", method = RequestMethod.POST)
-    public ResponseEntity<Result> modifyAdminPassword(@RequestBody AdminModifyPwd adminModifyPwd) {
-        try {
-            if(accountService.adminModifyPwd(adminModifyPwd))
-                return new ResponseEntity<>(new Result(Result.RESULT_SUCCESS), HttpStatus.OK);
-            else
-                return new ResponseEntity<>(new Result(Result.RESULT_ERROR), HttpStatus.OK);
-        } catch (AccountServiceException ae) {
-            throw new CatchServiceException(ae);
-        }
-    }
+//    @RequestMapping(value = "modify/admin", method = RequestMethod.POST)
+//    public ResponseEntity<Result> modifyAdminPassword(@RequestBody AdminModifyPwd adminModifyPwd) {
+//        try {
+//            if(accountService.adminModifyPwd(adminModifyPwd))
+//                return new ResponseEntity<>(new Result(Result.RESULT_SUCCESS), HttpStatus.OK);
+//            else
+//                return new ResponseEntity<>(new Result(Result.RESULT_ERROR), HttpStatus.OK);
+//        } catch (AccountServiceException ae) {
+//            throw new CatchServiceException(ae);
+//        }
+//    }
 
     @RequestMapping(value = "modify/force", method = RequestMethod.POST)
     public ResponseEntity<Result> forceModifyStaff(
@@ -163,14 +161,14 @@ public class AccountController{
         }
     }
 
-    @RequestMapping(value = "modify/force/admin", method = RequestMethod.POST)
-    public ResponseEntity<Result> forceModifyAdmin(
-            @RequestParam(value = "userId") String userId) {
-        try {
-            accountService.forceModifyAdmin(userId);
-            return new ResponseEntity<>(new Result(Result.RESULT_SUCCESS), HttpStatus.OK);
-        } catch (AccountServiceException ae) {
-            throw new CatchServiceException(ae);
-        }
-    }
+//    @RequestMapping(value = "modify/force/admin", method = RequestMethod.POST)
+//    public ResponseEntity<Result> forceModifyAdmin(
+//            @RequestParam(value = "userId") String userId) {
+//        try {
+//            accountService.forceModifyAdmin(userId);
+//            return new ResponseEntity<>(new Result(Result.RESULT_SUCCESS), HttpStatus.OK);
+//        } catch (AccountServiceException ae) {
+//            throw new CatchServiceException(ae);
+//        }
+//    }
 }

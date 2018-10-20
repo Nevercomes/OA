@@ -52,7 +52,7 @@ function getSession() {
                 var staff = JSON.parse(data);
                 sessionUserId = staff.userId;
                 sessionName = staff.name;
-                sessionDepartment = getDeaprtmentStr(staff.department);
+                sessionDepartment = getDepartmentStr(staff.department);
                 sessionPosition = staff.position;
             } else {
 

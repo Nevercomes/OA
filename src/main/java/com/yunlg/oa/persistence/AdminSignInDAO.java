@@ -1,7 +1,5 @@
 package com.yunlg.oa.persistence;
 
-import com.yunlg.oa.domain.model.AdminSignIn;
-
 import javax.persistence.PersistenceException;
 
 public interface AdminSignInDAO {

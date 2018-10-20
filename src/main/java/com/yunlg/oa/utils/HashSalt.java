@@ -1,6 +1,5 @@
 package com.yunlg.oa.utils;
 
-import com.yunlg.oa.domain.model.AdminSignIn;
 import com.yunlg.oa.domain.model.StaffSignIn;
 
 import java.util.List;

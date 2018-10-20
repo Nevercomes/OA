@@ -34,7 +34,7 @@ if(typeof POSITIONSTR == undefined){
     POSITIONSTR.GROUP = "组长";
 }
 
-function getDeaprtmentStr(code) {
+function getDepartmentStr(code) {
     switch (code) {
         case 0:
             return DEPARTMENTSTR.ALL;
@@ -46,3 +46,29 @@ function getDeaprtmentStr(code) {
             return DEPARTMENTSTR.ART;
     }
 }
+
+function getDepartmentCode(str) {
+    switch (str) {
+        case "中心":
+            return DEPARTMENTCODE.ALL;
+        case "研发":
+            return DEPARTMENTCODE.RD;
+        case "网络":
+            return DEPARTMENTCODE.NETWORKS;
+        case "美工":
+            return DEPARTMENTCODE.ART;
+        default :
+            return DEPARTMENTCODE.ALL;
+    }
+}
+
+function getMonthCode(str) {
+    switch (str) {
+
+    }
+}
+
+
+
+
+

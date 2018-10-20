@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class ViewResult {
-    private String staffName;
     private int department;
+    private String staffName;
     private int position;
     private float score;
 }
