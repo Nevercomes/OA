@@ -1,54 +1,71 @@
 package com.yunlg.oa.service.impl;
 
-import com.yunlg.oa.domain.model.Staff;
-import com.yunlg.oa.domain.model.StaffSignIn;
-import com.yunlg.oa.domain.wrapper.AdminModifyPwd;
+import com.yunlg.oa.domain.model.User;
+import com.yunlg.oa.domain.model.SignIn;
+import com.yunlg.oa.domain.wrapper.BatchRegister;
 import com.yunlg.oa.domain.wrapper.StaffModifyPwd;
+import com.yunlg.oa.domain.wrapper.UserRegister;
 import com.yunlg.oa.exception.AccountServiceException;
 import com.yunlg.oa.exception.ExceptionMessage;
-import com.yunlg.oa.persistence.AdminDAO;
-import com.yunlg.oa.persistence.AdminSignInDAO;
-import com.yunlg.oa.persistence.StaffDAO;
-import com.yunlg.oa.persistence.StaffSignInDAO;
+import com.yunlg.oa.persistence.UserDAO;
+import com.yunlg.oa.persistence.SignInDAO;
 import com.yunlg.oa.service.AccountService;
 import com.yunlg.oa.utils.HashSalt;
-import com.yunlg.oa.utils.NumberingRandom;
+import com.yunlg.oa.utils.PositionAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 
-    private StaffDAO staffDAO;
-    private StaffSignInDAO staffSignInDAO;
-    private AdminDAO adminDAO;
-    private AdminSignInDAO adminSignInDAO;
+    private UserDAO userDAO;
+    private SignInDAO signInDAO;
 
     @Autowired
-    public AccountServiceImpl(StaffDAO staffDAO, StaffSignInDAO staffSignInDAO, AdminDAO adminDAO, AdminSignInDAO adminSignInDAO) {
-        this.staffDAO = staffDAO;
-        this.staffSignInDAO = staffSignInDAO;
-        this.adminDAO = adminDAO;
-        this.adminSignInDAO = adminSignInDAO;
+    public AccountServiceImpl(UserDAO userDAO, SignInDAO signInDAO) {
+        this.userDAO = userDAO;
+        this.signInDAO = signInDAO;
     }
 
     @Override
-    public Staff staffLogin(String userId, String password) throws AccountServiceException {
+    public User userLogin(String userId, String password) throws AccountServiceException {
         try {
-            StaffSignIn staffSignIn = staffSignInDAO.getStaffSignIn(userId);
-            if (staffSignIn == null)
+            SignIn signIn = signInDAO.getSignIn(userId);
+            if (signIn == null)
                 throw new AccountServiceException(ExceptionMessage.NOACCOUNT);
-            Staff staff = new Staff();
-            if (HashSalt.verify(staffSignIn.getPassword(), password, staffSignIn.getSalt()))
-                staff = staffDAO.getStaff(userId);
-            if (staff == null)
+            User user = new User();
+            if (HashSalt.verify(signIn.getPassword(), password, signIn.getSalt()))
+                user = userDAO.getStaff(userId);
+            if (user == null)
                 throw new AccountServiceException(ExceptionMessage.FALSEPASSWORD);
-            return staff;
+            return user;
         } catch (PersistenceException pe) {
             throw new AccountServiceException(pe);
+        }
+    }
+
+    @Override
+    public void adminRegister(UserRegister userRegister) throws AccountServiceException {
+        try {
+            SignIn signIn = new SignIn();
+            User user = new User();
+            String password = userRegister.getPassword();
+//            password = Base64.decode(password);
+            signIn.setUserId(userRegister.getUserId());
+            signIn.setPassword(password);
+            signIn = HashSalt.addSalt(signIn);
+            user.setUserId(userRegister.getUserId());
+            user.setName(userRegister.getName());
+            user.setDepartment(userRegister.getDepartment());
+            user.setPosition(userRegister.getPosition());
+            user.setAdmin(PositionAdmin.getAdminInPosition(userRegister.getPosition()));
+            userDAO.saveAdmin(user, signIn);
+        } catch (PersistenceException e) {
+            throw new AccountServiceException(e);
         }
     }
 
@@ -83,24 +100,38 @@ public class AccountServiceImpl implements AccountService {
 //    }
 
     @Override
-    public void batchRegister(List<Staff> staffList, List<StaffSignIn> staffSignInList) throws AccountServiceException {
+    public void batchRegister(List<BatchRegister> batchRegisterList) throws AccountServiceException {
         try {
-            List<StaffSignIn> staffSignInList1 = HashSalt.addSalt(staffSignInList);
-            staffDAO.batchSaveStaff(staffList, staffSignInList1);
+            List<User> userList = new ArrayList<>();
+            List<SignIn> signInList = new ArrayList<>();
+            for(BatchRegister batchRegister : batchRegisterList) {
+                User user = new User();
+                SignIn signIn = new SignIn();
+                user.setUserId(batchRegister.getUserId());
+                user.setName(batchRegister.getName());
+                user.setDepartment(batchRegister.getDepartment());
+                user.setPosition(batchRegister.getPosition());
+                signIn.setUserId(batchRegister.getUserId());
+                signIn.setPassword("yunlugu");
+                userList.add(user);
+                signInList.add(signIn);
+            }
+            List<SignIn> signInList1 = HashSalt.addSalt(signInList);
+            userDAO.batchSaveStaff(userList, signInList1);
         } catch (PersistenceException pe) {
             throw new AccountServiceException(ExceptionMessage.ALREADYHAVEACCOUNT, pe);
         }
     }
 
     @Override
-    public boolean staffModifyPwd(StaffModifyPwd staffModifyPwd) throws AccountServiceException {
+    public boolean modifyPwd(StaffModifyPwd staffModifyPwd) throws AccountServiceException {
         try {
-            StaffSignIn staffSignIn = staffSignInDAO.getStaffSignIn(staffModifyPwd.getUserId());
-            if (staffSignIn == null)
+            SignIn signIn = signInDAO.getSignIn(staffModifyPwd.getUserId());
+            if (signIn == null)
                 throw new AccountServiceException(ExceptionMessage.NOACCOUNT);
-            if (HashSalt.verify(staffSignIn.getPassword(), staffModifyPwd.getOldPassword(), staffSignIn.getSalt())) {
-                staffSignIn.setPassword(staffModifyPwd.getNewPassword());
-                staffSignInDAO.updateStaffSign(HashSalt.addSalt(staffSignIn));
+            if (HashSalt.verify(signIn.getPassword(), staffModifyPwd.getOldPassword(), signIn.getSalt())) {
+                signIn.setPassword(staffModifyPwd.getNewPassword());
+                signInDAO.updateStaffSignIn(HashSalt.addSalt(signIn));
                 return true;
             }
             return false;
@@ -127,12 +158,12 @@ public class AccountServiceImpl implements AccountService {
 //    }
 
     @Override
-    public void forceModifyStaff(String userId) throws AccountServiceException {
+    public void resetStaffPwd(String userId) throws AccountServiceException {
         try {
-            StaffSignIn staffSignIn = new StaffSignIn();
-            staffSignIn.setUserId(userId);
-            staffSignIn.setPassword("yunlugu000");
-            staffSignInDAO.updateStaffSign(HashSalt.addSalt(staffSignIn));
+            SignIn signIn = new SignIn();
+            signIn.setUserId(userId);
+            signIn.setPassword("yunlugu000");
+            signInDAO.updateStaffSignIn(HashSalt.addSalt(signIn));
         } catch (PersistenceException pe) {
             throw new AccountServiceException(ExceptionMessage.NOACCOUNT, pe);
         }
@@ -151,9 +182,9 @@ public class AccountServiceImpl implements AccountService {
 //    }
 
     @Override
-    public Staff getStaff(String userId) throws AccountServiceException {
+    public User getUser(String userId) throws AccountServiceException {
         try {
-            return staffDAO.getStaff(userId);
+            return userDAO.getStaff(userId);
         } catch (PersistenceException pe) {
             throw new AccountServiceException(ExceptionMessage.NOACCOUNT, pe);
         }

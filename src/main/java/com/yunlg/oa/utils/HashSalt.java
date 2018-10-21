@@ -1,34 +1,27 @@
 package com.yunlg.oa.utils;
 
-import com.yunlg.oa.domain.model.StaffSignIn;
+import com.yunlg.oa.domain.model.SignIn;
 
 import java.util.List;
 
 public class HashSalt {
-    public static AdminSignIn addSalt(AdminSignIn adminSignIn) {
+
+    public static SignIn addSalt(SignIn signIn) {
         String salt = CryptoUtils.getSalt();
-        String hashedPassword = CryptoUtils.getHash(adminSignIn.getPassword(), salt);
-        adminSignIn.setPassword(hashedPassword);
-        adminSignIn.setSalt(salt);
-        return adminSignIn;
+        String hashedPassword = CryptoUtils.getHash(signIn.getPassword(), salt);
+        signIn.setPassword(hashedPassword);
+        signIn.setSalt(salt);
+        return signIn;
     }
 
-    public static StaffSignIn addSalt(StaffSignIn staffSignIn) {
-        String salt = CryptoUtils.getSalt();
-        String hashedPassword = CryptoUtils.getHash(staffSignIn.getPassword(), salt);
-        staffSignIn.setPassword(hashedPassword);
-        staffSignIn.setSalt(salt);
-        return staffSignIn;
-    }
-
-    public static List<StaffSignIn> addSalt(List<StaffSignIn> staffSignInList) {
-        for(StaffSignIn staffSignIn : staffSignInList) {
+    public static List<SignIn> addSalt(List<SignIn> signInList) {
+        for(SignIn signIn : signInList) {
             String salt = CryptoUtils.getSalt();
-            String hashedPassword = CryptoUtils.getHash(staffSignIn.getPassword(), salt);
-            staffSignIn.setPassword(hashedPassword);
-            staffSignIn.setSalt(salt);
+            String hashedPassword = CryptoUtils.getHash(signIn.getPassword(), salt);
+            signIn.setPassword(hashedPassword);
+            signIn.setSalt(salt);
         }
-        return staffSignInList;
+        return signInList;
     }
 
     public static boolean verify(String hashedPassword, String password, String salt) {

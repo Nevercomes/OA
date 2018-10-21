@@ -1,6 +1,5 @@
 package com.yunlg.oa.utils;
 
-import com.yunlg.oa.global.Department;
 import com.yunlg.oa.global.Position;
 
 public class PositionMapping {
@@ -9,7 +8,7 @@ public class PositionMapping {
             case 0:
                 return Position.STAFF;
             case 1:
-                return Position.INSTURCTOR;
+                return Position.INSTRUCTOR;
             case 2:
                 return Position.DIRECTOR;
             case 3:
@@ -27,7 +26,7 @@ public class PositionMapping {
         switch (position) {
             case STAFF:
                 return 0;
-            case INSTURCTOR:
+            case INSTRUCTOR:
                 return 1;
             case DIRECTOR:
                 return 2;
@@ -39,6 +38,25 @@ public class PositionMapping {
                 return 5;
             default:
                 return 0;
+        }
+    }
+
+    public static String getPositionStr(Position position) {
+        switch (position) {
+            case STAFF:
+                return "员工";
+            case INSTRUCTOR:
+                return "指导老师";
+            case DIRECTOR:
+                return "总监";
+            case HEAD:
+                return "部长";
+            case VICEHEAD:
+                return "副部长";
+            case GROUP:
+                return "小组长";
+            default:
+                return "员工";
         }
     }
 }

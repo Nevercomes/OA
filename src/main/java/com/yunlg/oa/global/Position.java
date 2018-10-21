@@ -1,7 +1,7 @@
 package com.yunlg.oa.global;
 
 public enum Position {
-    INSTURCTOR,
+    INSTRUCTOR,
     DIRECTOR,
     HEAD,
     VICEHEAD,

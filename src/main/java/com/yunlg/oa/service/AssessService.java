@@ -2,8 +2,8 @@ package com.yunlg.oa.service;
 
 import com.yunlg.oa.domain.model.AssessResult;
 import com.yunlg.oa.domain.model.Assessment;
-import com.yunlg.oa.domain.wrapper.ViewAssessment;
-import com.yunlg.oa.domain.wrapper.ViewResult;
+import com.yunlg.oa.domain.wrapper.ResultWrapper;
+import com.yunlg.oa.domain.wrapper.AssessmentWrapper;
 import com.yunlg.oa.exception.AssessServiceException;
 
 import java.util.List;
@@ -13,13 +13,18 @@ public interface AssessService {
 
     void submitAssessment(Assessment assessment) throws AssessServiceException;
 
-    List<ViewAssessment> viewAssessment(int department, int month) throws AssessServiceException;
+    List<AssessmentWrapper> viewAssessment(int department, int month) throws AssessServiceException;
 
-    void evaluateAssessment(Assessment assessment) throws AssessServiceException;
+    AssessmentWrapper viewAssessment(String userId, int month) throws AssessServiceException;
 
-    List<ViewResult> getViewResultList(int department, int month) throws AssessServiceException;
+    void evaluateAssessment(Assessment assessment, String department) throws AssessServiceException;
+
+    List<ResultWrapper> getResultList(int department, int month) throws AssessServiceException;
 
     AssessResult getAssessResult(int department, int month) throws AssessServiceException;
 
-    void saveAssessResult(int department, int month, String words) throws AssessServiceException;
+    void saveAssessResult(int department, int month) throws AssessServiceException;
+
+    List<List<ResultWrapper>> getResultLists(int department, int month) throws AssessServiceException;
+
 }

@@ -1,20 +1,20 @@
-if(typeof DEPARTMENTCODE == undefined){
+// if(typeof DEPARTMENTCODE == undefined){
     var DEPARTMENTCODE = {};
     DEPARTMENTCODE.ALL = 0;
     DEPARTMENTCODE.RD = 1;
     DEPARTMENTCODE.NETWORKS = 2;
     DEPARTMENTCODE.ART = 3;
-}
+// }
 
-if(typeof DEPARTMENTSTR == undefined){
+// if(typeof DEPARTMENTSTR == undefined){
     var DEPARTMENTSTR = {};
     DEPARTMENTSTR.ALL = "中心";
     DEPARTMENTSTR.RD = "研发部";
     DEPARTMENTSTR.NETWORKS = "网络部";
     DEPARTMENTSTR.ART = "美工部";
-}
+// }
 
-if(typeof POSITIONCODE == undefined){
+// if(typeof POSITIONCODE == undefined){
     var POSITIONCODE = {};
     POSITIONCODE.STAFF = 0;
     POSITIONCODE.INSTURCTOR = 1;
@@ -22,9 +22,9 @@ if(typeof POSITIONCODE == undefined){
     POSITIONCODE.HEAD = 3;
     POSITIONCODE.VICEHEAD = 4;
     POSITIONCODE.GROUP = 5;
-}
+// }
 
-if(typeof POSITIONSTR == undefined){
+// if(typeof POSITIONSTR == undefined){
     var POSITIONSTR = {};
     POSITIONSTR.STAFF = "员工";
     POSITIONSTR.INSTURCTOR = "指导老师";
@@ -32,7 +32,7 @@ if(typeof POSITIONSTR == undefined){
     POSITIONSTR.HEAD = "部长";
     POSITIONSTR.VICEHEAD = "副部长";
     POSITIONSTR.GROUP = "组长";
-}
+// }
 
 function getDepartmentStr(code) {
     switch (code) {
@@ -59,6 +59,23 @@ function getDepartmentCode(str) {
             return DEPARTMENTCODE.ART;
         default :
             return DEPARTMENTCODE.ALL;
+    }
+}
+
+function getPositionCode(str) {
+    switch (str) {
+        case "员工":
+            return POSITIONCODE.STAFF;
+        case "指导老师":
+            return POSITIONCODE.INSTURCTOR;
+        case "总监":
+            return POSITIONCODE.DIRECTOR;
+        case "部长":
+            return POSITIONCODE.HEAD;
+        case "副部长":
+            return POSITIONCODE.VICEHEAD;
+        case "小组长":
+            return POSITIONCODE.GROUP;
     }
 }
 

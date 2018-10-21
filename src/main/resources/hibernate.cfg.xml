@@ -25,15 +25,19 @@
         <!--指定自动生成数据表的策略-->
         <!--<property name="hbm2ddl.auto">update</property>-->
 
-        <mapping class="com.yunlg.oa.domain.model.Admin" />
-        <mapping class="com.yunlg.oa.domain.model.Staff" />
-        <mapping class="com.yunlg.oa.domain.model.AdminSignIn" />
+        <!--<mapping class="com.yunlg.oa.domain.model.Admin" />-->
+        <mapping class="com.yunlg.oa.domain.model.User" />
+        <!--<mapping class="com.yunlg.oa.domain.model.AdminSignIn" />-->
         <mapping class="com.yunlg.oa.domain.model.Assessment" />
         <mapping class="com.yunlg.oa.domain.model.AssessResult" />
         <mapping class="com.yunlg.oa.domain.model.FileMission" />
         <mapping class="com.yunlg.oa.domain.model.FileOther" />
-        <mapping class="com.yunlg.oa.domain.model.StaffSignIn" />
+        <mapping class="com.yunlg.oa.domain.model.SignIn" />
         <mapping class="com.yunlg.oa.domain.model.WorkPlan" />
+        <mapping class="com.yunlg.oa.domain.model.Role" />
+        <mapping class="com.yunlg.oa.domain.model.Permission" />
+        <mapping class="com.yunlg.oa.domain.model.RolePermissionMapping" />
+        <mapping class="com.yunlg.oa.domain.model.UserRoleMapping" />
 
     </session-factory>
 </hibernate-configuration>

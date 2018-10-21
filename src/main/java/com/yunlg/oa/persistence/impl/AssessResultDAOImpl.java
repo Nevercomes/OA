@@ -1,6 +1,7 @@
 package com.yunlg.oa.persistence.impl;
 
 import com.yunlg.oa.domain.model.AssessResult;
+import com.yunlg.oa.domain.orm.AssessmentORM;
 import com.yunlg.oa.persistence.AbstractDAO;
 import com.yunlg.oa.persistence.AssessResultDAO;
 import com.yunlg.oa.utils.HibernateUtil;
@@ -11,9 +12,11 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
+import java.util.List;
 
 @Repository
 public class AssessResultDAOImpl extends AbstractDAO implements AssessResultDAO {
+
     @Override
     public AssessResult getAssessResult(int department, int month) throws PersistenceException {
         Session session = HibernateUtil.getSession();
@@ -34,7 +37,7 @@ public class AssessResultDAOImpl extends AbstractDAO implements AssessResultDAO 
     }
 
     @Override
-    public void updateAssessResult(int department, int month, String words) throws PersistenceException {
+    public void updateAssessResult(int department, int month) throws PersistenceException {
         Session session = HibernateUtil.getSession();
         Transaction transaction = getTransaction(session);
         try {
@@ -46,17 +49,17 @@ public class AssessResultDAOImpl extends AbstractDAO implements AssessResultDAO 
                 AssessResult assessResult1 = new AssessResult();
                 assessResult1.setDepartment(department);
                 assessResult1.setMonth(month);
-                assessResult1.setWords(words);
                 assessResult1.setModifyTime(TimeUtil.getCurrentDate());
                 session.save(assessResult1);
             } else {
-                String hql1 = "update AssessResult ar set ar.words='" + words + "' , ar.modifyTime=" + TimeUtil.getCurrentDate() +
+                String hql1 = "update AssessResult ar set ar.modifyTime=" + TimeUtil.getCurrentDate() +
                         " where ar.department=" + department + " and month=" + month;
                 session.createQuery(hql1).executeUpdate();
             }
             session.flush();
             transaction.commit();
         } catch (RuntimeException e) {
+            transaction.rollback();
             throw new PersistenceException(e);
         } finally {
             session.close();

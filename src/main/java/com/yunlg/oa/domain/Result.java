@@ -10,6 +10,7 @@ public class Result {
     private Object obj;
     public static final String RESULT_SUCCESS = "success";
     public static final String RESULT_ERROR = "error";
+    public static final String RESULT_NO_AUTHORITY = "no authority";
 
     public Result(String result) {
         this.result = result;

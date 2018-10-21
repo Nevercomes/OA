@@ -16,6 +16,8 @@ public class WorkPlan {
     private long planId;
     @Column(name = "user_id")
     private String userId;
+    @Column(name = "month")
+    private int month;
     @Column(name = "content")
     private String content;
     @Column(name = "modify_time")
