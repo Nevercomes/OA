@@ -33,7 +33,7 @@ public class WorkServiceImpl implements WorkService {
             WorkPlanORM workPlanORM = workPlanDAO.getWorkPlanORM(userId, month);
             WorkPlanWrapper workPlanWrapper = new WorkPlanWrapper();
             if(workPlanORM == null) {
-                return null;
+                return workPlanWrapper;
             }
             WorkPlan workPlan = workPlanORM.getWorkPlan();
             User user = workPlanORM.getUser();
@@ -51,7 +51,7 @@ public class WorkServiceImpl implements WorkService {
     public void submitWorkPlan(WorkPlan workPlan) throws WorkServiceException {
         try {
             if(workPlan.getPlanId() == 0) {
-                workPlan.setMonth(TimeUtil.getBeforMonth());
+//                workPlan.setMonth(TimeUtil.getBeforeMonth());
                 workPlan.setModifyTime(TimeUtil.getCurrentDate());
                 workPlanDAO.saveWorkPlan(workPlan);
             }
@@ -68,7 +68,7 @@ public class WorkServiceImpl implements WorkService {
             List<WorkPlanORM> ormList = workPlanDAO.getWorkPlanORMList(department, month);
             List<WorkPlanWrapper> workPlanWrapperList = new ArrayList<>();
             if(ormList == null) {
-                return null;
+                return new ArrayList<>();
             }
             for(WorkPlanORM orm : ormList) {
                 WorkPlanWrapper workPlanWrapper = new WorkPlanWrapper();

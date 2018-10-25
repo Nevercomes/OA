@@ -7,5 +7,5 @@ import javax.persistence.PersistenceException;
 public interface SignInDAO {
     SignIn getSignIn(String userId) throws PersistenceException;
 
-    void updateStaffSignIn(SignIn signIn) throws PersistenceException;
+    void updateSignIn(SignIn signIn) throws PersistenceException;
 }

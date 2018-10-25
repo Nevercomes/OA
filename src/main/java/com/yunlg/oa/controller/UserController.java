@@ -3,6 +3,7 @@ package com.yunlg.oa.controller;
 import com.yunlg.oa.auth.AuthCode;
 import com.yunlg.oa.auth.AuthValidate;
 import com.yunlg.oa.domain.Result;
+import com.yunlg.oa.domain.model.AssessRecord;
 import com.yunlg.oa.domain.model.AssessResult;
 import com.yunlg.oa.domain.model.Assessment;
 import com.yunlg.oa.domain.model.WorkPlan;
@@ -45,7 +46,18 @@ public class UserController {
         this.workService = workService;
     }
 
-    @RequestMapping(value = "assess/fill", method = RequestMethod.GET)
+    @RequestMapping(value = "/assess/info", method = RequestMethod.GET)
+    @AuthValidate(AuthCode.AU0000)
+    public ResponseEntity<AssessRecord> getAssessTime() {
+        try {
+            AssessRecord assessRecord = assessService.getAssessTime();
+            return new ResponseEntity<>(assessRecord, HttpStatus.OK);
+        } catch (AssessServiceException sse) {
+            throw new CatchServiceException(sse);
+        }
+    }
+
+    @RequestMapping(value = "/assess/fill", method = RequestMethod.GET)
     @AuthValidate(AuthCode.AU0000)
     public ResponseEntity<AssessmentWrapper> getAssessment(
             @RequestParam(value = "month") int month) {
@@ -59,7 +71,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "assess/submit", method = RequestMethod.POST)
+    @RequestMapping(value = "/assess/submit", method = RequestMethod.POST)
     @AuthValidate(AuthCode.AU0000)
     public ResponseEntity<Result> submitAssessment(@RequestBody Assessment assessment) {
         try {
@@ -107,10 +119,7 @@ public class UserController {
             @RequestParam int department,
             @RequestParam int month) {
         try {
-            AssessResult assessResult = assessService.getAssessResult(department, month);
-            if(assessResult == null)
-                return null;
-            List<List<ResultWrapper>> resultWrapperLists = assessService.getResultLists(department, month);
+            List<List<ResultWrapper>> resultWrapperLists = assessService.getResultListsByStaff(department, month);
             return new ResponseEntity<>(resultWrapperLists, HttpStatus.OK);
         } catch (AssessServiceException sse) {
             throw new CatchServiceException(sse);

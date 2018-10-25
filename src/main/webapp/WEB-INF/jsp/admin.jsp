@@ -5,6 +5,8 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
+
+<%--assessStatus false--%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -19,501 +21,745 @@
     <script src="<%=path%>/plugins/jquery/jquery-3.2.1.min.js"></script>
     <script src="<%=path%>/bootstrap4/js/bootstrap.min.js"></script>
     <script src="<%=path%>/plugins/json/jquery.json.min.js"></script>
-    <script src="<%=path%>/js/home.js"></script>
+
+    <script src="<%=path%>/js/debug.js"></script>
+
+    <script src="<%=path%>/js/common/home.js"></script>
+    <script src="<%=path%>/js/common/enum.js"></script>
+    <script src="<%=path%>/js/common/alert.js"></script>
+
+    <script src="<%=path%>/js/utils/timeUtil.js"></script>
+    <script src="<%=path%>/js/utils/createTable.js"></script>
+    <script src="<%=path%>/js/utils/base64.js"></script>
+    <script src="<%=path%>/js/utils/pagination.js"></script>
+    <script src="<%=path%>/js/utils/unicodeAndAnsi.js"></script>
+    <script src="<%=path%>/js/utils/xls.js"></script>
+
     <script src="<%=path%>/js/account/login.js"></script>
+    <script src="<%=path%>/js/account/logout.js"></script>
+    <script src="<%=path%>/js/account/modify.js"></script>
+
     <script src="<%=path%>/js/staff/assess.js"></script>
     <script src="<%=path%>/js/staff/result.js"></script>
     <script src="<%=path%>/js/staff/plan.js"></script>
+
     <script src="<%=path%>/js/admin/assess.js"></script>
+    <script src="<%=path%>/js/admin/backstage.js"></script>
+    <script src="<%=path%>/js/admin/staffInfo.js"></script>
+    <script src="<%=path%>/js/admin/init.js"></script>
+    <script src="<%=path%>/js/admin/depAndMonth.js"></script>
+    <script src="<%=path%>/js/admin/pagination.js"></script>
+    <script src="<%=path%>/js/admin/events.js"></script>
     <script src="<%=path%>/js/admin/result.js"></script>
     <script src="<%=path%>/js/admin/plan.js"></script>
-    <script src="<%=path%>/js/admin/batch.js"></script>
-    <script src="<%=path%>/js/utils/enum.js"></script>
-    <script src="<%=path%>/js/utils/timeUtil.js"></script>
 
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">
+<header class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row bd-navbar">
+    <a class="navbar-brand mr-0 mr-md-2" href="#">
         <img id="test" src="<%=path%>/image/logo.png" width="150" height="40">
     </a>
-    <h4>信息技术中心</h4>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-
-        </ul>
-        <nav class="navbar navbar-light bg-light">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">欢迎 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link" href="#">${sessionScope.department}</span>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link" href="#">${sessionScope.position}</span>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        ${sessionScope.name}
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">修改密码</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">登出</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link" href="#">2018/10</span>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</nav>
-
-<div class="row">
-    <div class="col-lg-2 col-md-3 col-ms-5 col-4 ml-2">
-        <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <li class="nav-item mt-2">
-                <a class="nav-link disabled" href="#">For Staff</a>
-            </li>
-            <li class="divider"></li>
-            <li class="nav-item mb-3">
-                <a class="nav-link active" id="v-pills-fill-tab" data-toggle="pill" href="#v-pills-assessment"
-                   role="tab"
-                   aria-controls="v-pills-assessment" aria-selected="true" onclick="fillAssessment()">绩效考核</a>
-            </li>
-            <li class="nav-item mb-3">
-                <a class="nav-link" id="v-pills-plan-tab" data-toggle="pill" href="#v-pills-plan" role="tab"
-                   aria-controls="v-pills-plan" aria-selected="true" onclick="submitPlan()">工作计划</a>
-            </li>
-            <li class="nav-item mb-3">
-                <a class="nav-link" id="v-pills-view-tab" data-toggle="pill" href="#v-pills-result" role="tab"
-                   aria-controls="v-pills-result" aria-selected="false" onclick="viewResult()">查看结果</a>
-            </li>
-            <li class="nav-item mt-2">
-                <a class="nav-link disabled" href="#">For Admin</a>
-            </li>
-            <li class="divider"></li>
-            <li class="nav-item mb-3">
-                <a class="nav-link" id="v-pills-eva-tab" data-toggle="pill" href="#v-pills-assessment" role="tab"
-                   aria-controls="v-pills-assessment" aria-selected="false">评估考核</a>
-            </li>
-            <li class="nav-item mb-3">
-                <a class="nav-link" id="v-pills-public-tab" data-toggle="pill" href="#v-pills-result" role="tab"
-                   aria-controls="v-pills-result" aria-selected="false" onclick="preViewResult()">发布结果</a>
-            </li>
-            <li class="nav-item mb-3">
-                <a class="nav-link" id="v-pills-viewPlan-tab" data-toggle="pill" href="#v-pills-plan" role="tab"
-                   aria-controls="v-pills-plan" aria-selected="false">审阅计划</a>
-            </li>
-            <li class="nav-item mb-3">
-                <a class="nav-link" id="v-pills-register-tab" data-toggle="pill" href="#v-pills-register" role="tab"
-                   aria-controls="v-pills-register" aria-selected="false">人员注册</a>
-            </li>
-            <li class="nav-item mb-3">
-                <a class="nav-link" id="v-pills-backstage-tab" data-toggle="pill" href="#v-pills-backstage" role="tab"
-                   aria-controls="v-pills-backstage" aria-selected="false">后台管理</a>
-            </li>
+    <div class="navbar-nav-scroll">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+            <li class="nav-item"><h4>信息技术中心</h4></li>
         </ul>
     </div>
-    <div class="col-lg-9 col-md-8 col-ms-6 col-7 ">
-        <div class="row">
-            <ul class="nav nav-pills mb-2 mt-2" id="pills-dep-tab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="pills-center-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-home" aria-selected="true">中心</a>
+    <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+        <li class="nav-item active">
+            <a class="nav-link" href="#">欢迎 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+            <span id="span-bar-dep" class="nav-link" href="#">${sessionScope.department}</span>
+        </li>
+        <li class="nav-item">
+            <span id="span-bar-pos" class="nav-link" href="#">${sessionScope.position}</span>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle mr-md-2" href="#" id="account-menu" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                ${sessionScope.name}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="account-menu">
+                <a class="dropdown-item" href="#" onclick="clickModifyTab()">修改密码</a>
+                <div class="dropdown-divider"></div>
+                <form action="<%=path%>/account/logout" method="post">
+                    <a class="dropdown-item" href="#" onclick="logout()">登出</a>
+                    <button id="btn-logout" class="d-none" type="submit"></button>
+                </form>
+            </div>
+        </li>
+        <li class="nav-item">
+            <span id="span-bar-date" class="nav-link" href="#">2018/10</span>
+        </li>
+    </ul>
+</header>
+<div class="container-fluid">
+    <div class="row flex-xl-nowrap">
+        <div class="col-md-3 col-xl-2 bd-sidebar">
+            <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <li class="nav-item mt-2">
+                    <a class="nav-link disabled" href="#">For Staff</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-rd-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-profile" aria-selected="false">研发</a>
+                <li class="nav-item mb-3">
+                    <a class="nav-link active" id="v-pills-fill-tab" data-toggle="pill" href="#v-pills-assessment"
+                       role="tab"
+                       aria-controls="v-pills-assessment" aria-selected="true" onclick="onFillTab()">绩效考核</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-networks-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-contact" aria-selected="false">网络</a>
+                <li class="nav-item mb-3">
+                    <a class="nav-link" id="v-pills-plan-tab" data-toggle="pill" href="#v-pills-plan" role="tab"
+                       aria-controls="v-pills-plan" aria-selected="true" onclick="onPlanTab()">工作计划</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-art-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-contact" aria-selected="false">美工</a>
+                <li class="nav-item mb-3">
+                    <a class="nav-link" id="v-pills-view-tab" data-toggle="pill" href="#v-pills-result" role="tab"
+                       aria-controls="v-pills-result" aria-selected="false" onclick="onViewTab()">查看结果</a>
+                </li>
+                <li class="nav-item mb-3 d-none">
+                    <a class="nav-link" id="v-pills-modify-tab" data-toggle="pill" href="#v-pills-modify" role="tab"
+                       aria-controls="v-pills-modify" aria-selected="false" onclick="onModifyTab()">修改密码</a>
+                </li>
+                <li class="nav-item mt-2">
+                    <a class="nav-link disabled" href="#">For Admin</a>
+                </li>
+                <li class="divider"></li>
+                <li class="nav-item mb-3">
+                    <a class="nav-link" id="v-pills-eva-tab" data-toggle="pill" href="#v-pills-assessment" role="tab"
+                       aria-controls="v-pills-assessment" aria-selected="false" onclick="onEvaTab()">评估考核</a>
+                </li>
+                <li class="nav-item mb-3">
+                    <a class="nav-link" id="v-pills-public-tab" data-toggle="pill" href="#v-pills-result" role="tab"
+                       aria-controls="v-pills-result" aria-selected="false" onclick="onPublicTab()">发布结果</a>
+                </li>
+                <li class="nav-item mb-3">
+                    <a class="nav-link" id="v-pills-viewPlan-tab" data-toggle="pill" href="#v-pills-plan" role="tab"
+                       aria-controls="v-pills-plan" aria-selected="false" onclick="onViewPlanTab()">审阅计划</a>
+                </li>
+                <li class="nav-item mb-3">
+                    <a class="nav-link" id="v-pills-register-tab" data-toggle="pill" href="#v-pills-register" role="tab"
+                       aria-controls="v-pills-register" aria-selected="false" onclick="onRegisterTab()">员工信息</a>
+                </li>
+                <li class="nav-item mb-3">
+                    <a class="nav-link" id="v-pills-backstage-tab" data-toggle="pill" href="#v-pills-backstage"
+                       role="tab"
+                       aria-controls="v-pills-backstage" aria-selected="false" onclick="onBackTab()">后台管理</a>
                 </li>
             </ul>
         </div>
-        <div class="row">
-            <ul class="nav nav-pills mb-3" id="pills-month-tab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="pills-jan-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-home" aria-selected="true">Jan</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-feb-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-profile" aria-selected="false">Feb</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-mar-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-contact" aria-selected="false">Mar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-apr-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-contact" aria-selected="false">Apr</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-may-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-home" aria-selected="true">May</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-june-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-profile" aria-selected="false">June</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-july-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-contact" aria-selected="false">July</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-aug-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-contact" aria-selected="false">Aug</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-sept-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-home" aria-selected="true">Sept</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-oct-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-profile" aria-selected="false">Oct</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-nov-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-contact" aria-selected="false">Nov</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-dec-tab" data-toggle="pill" href="#" role="tab"
-                       aria-controls="pills-contact" aria-selected="false">Dec</a>
-                </li>
-            </ul>
-        </div>
-        <div class="row">
-            <div class="offset-2">
-                <div class="tab-content mt-4" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-assessment" role="tabpanel"
-                         aria-labelledby="v-pills-assessment-tab">
-                        <div class="row">
-                            <div class="col-lg-9">
-                                <table class="table" border="1">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col" colspan="6">员工个人绩效考核表</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <th scope="col">姓名</th>
-                                        <td>
-                                            <span id="span-assess-name">白云舒</span>
-                                        </td>
-                                        <th scope="col">部门</th>
-                                        <td>
-                                            <span id="span-assess-dep">研发部</span>
-                                        </td>
-                                        <th scope="col">日期</th>
-                                        <td>
-                                            <span id="span-assess-date">2018-10-18</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">常规</br>
-                                            工作
-                                        </th>
-                                        <td colspan="5">
-                                            <textarea id="ta-assess-regular" rows="4"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">计划外</br>
-                                            工作
-                                        </th>
-                                        <td colspan="5">
-                                            <textarea id="ta-assess-out" rows="4"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">其它</br>
-                                            加班
-                                        </th>
-                                        <td colspan="5">
-                                            <textarea id="ta-assess-other" rows="4"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">其它</br>
-                                            开支
-                                        </th>
-                                        <td colspan="5">
-                                            <input id="text-assess-expanse" type="text" name="">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">工作</br>
-                                            计划(简)
-                                        </th>
-                                        <td colspan="5">
-                                            <textarea id="ta-assess-plan" rows="4"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" rowspan="2">部长</br>
-                                            评价
-                                        </th>
-                                        <td colspan="4" rowspan="2">
-                                            <textarea id="ta-assess-head-eva" rows="4"></textarea>
-                                        </td>
-                                        <td>
-                                            评分
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input id="text-assess-head-score" type="text" name="">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" rowspan="2">总监</br>
-                                            评价
-                                        </th>
-                                        <td colspan="4" rowspan="2">
-                                            <textarea id="ta-assess-dir-eva" rows="4"></textarea>
-                                        </td>
-                                        <td>
-                                            评分
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input id="text-assess-dir-score" type="text" name="">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">备注</th>
-                                        <td colspan="5">
-                                            <textarea id="ta-assess-remark" rows="4"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" colspan="6">中南大学网络思想政治工作中心</th>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-lg-2" id="div-fill-submit">
-                                <input id="btn-fill-submit" type="button" name="" value="提交">
-                                <input id="btn-file-mission" type="button" name="" value="上传任务文件">
-                                <input id="btn-file-other" type="button" name="" value="上传其它文件">
-                                <p>
-                                    <span id="span-hint-month">十</span>月考核表</br>
-                                    上交时间为</br>
-                                    <span id="span-hint-date">11-1-11-7</span>
-                                </p>
-                            </div>
-                            <div class="col-lg-2" id="div-eva-submit">
-                                <input id="btn-eva-submit" type="button" name="" value="提交">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination" id="pgae-partition">
+        <div class="col-12 col-md-9 col-xl-8 pl-md-5 bd-content ">
+            <div class="row">
+                <ul class="nav nav-pills mt-3 mb-2 bd-func-bar" id="pills-dep-nav" role="tablist" style="display: none">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-center-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-home" aria-selected="true">中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-rd-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-profile" aria-selected="false">研发</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-networks-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-contact" aria-selected="false">网络</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-art-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-contact" aria-selected="false">美工</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <ul class="nav nav-pills mt-3 bd-func-bar" id="pills-month-nav" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-jan-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-home" aria-selected="true">Jan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-feb-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-profile" aria-selected="false">Feb</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-mar-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-contact" aria-selected="false">Mar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-apr-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-contact" aria-selected="false">Apr</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-may-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-home" aria-selected="true">May</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-june-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-profile" aria-selected="false">June</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-july-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-contact" aria-selected="false">July</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-aug-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-contact" aria-selected="false">Aug</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-sept-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-home" aria-selected="true">Sept</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-oct-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-profile" aria-selected="false">Oct</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-nov-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-contact" aria-selected="false">Nov</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-dec-tab" data-toggle="pill" href="#" role="tab"
+                           aria-controls="pills-contact" aria-selected="false">Dec</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <ul class="nav nav-pills mt-3 mb-2 bd-func-bar" id="pills-back-nav" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-back-reg-tab" data-toggle="pill" href="#pills-back-reg"
+                           role="tab"
+                           aria-controls="pills-back-reg" aria-selected="true">管理员注册</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-back-setTime-tab" data-toggle="pill" href="#pills-back-setTime"
+                           role="tab"
+                           aria-controls="pills-back-setTime" aria-selected="false">设置考核时间</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-back-exportAssess-tab" data-toggle="pill"
+                           href="#pills-back-exportAssess" role="tab"
+                           aria-controls="pills-back-exportAssess" aria-selected="false">导出考核信息</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-back-exportResult-tab" data-toggle="pill"
+                           href="#pills-back-exportResult" role="tab"
+                           aria-controls="pills-back-exportResult" aria-selected="false">导出考核结果</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <ul class="nav nav-pills mt-3 mb-2 bd-func-bar" id="pills-info-nav" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-info-batch-tab" data-toggle="pill" href="#pills-info-batch"
+                           role="tab"
+                           aria-controls="pills-info-batch" aria-selected="true">人员注册</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-info-reset-tab" data-toggle="pill" href="#pills-info-reset"
+                           role="tab"
+                           aria-controls="pills-info-reset" aria-selected="false">重置密码</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-info-view-tab" data-toggle="pill"
+                           href="#pills-info-view" role="tab"
+                           aria-controls="pills-info-view" aria-selected="false">查看信息</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="offset-2">
+                    <div class="tab-content mt-4" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-assessment" role="tabpanel"
+                             aria-labelledby="v-pills-assessment-tab">
+                            <div class="row">
+                                <div class="col-lg-11">
+                                    <table class="table bd-table" border="1">
+                                        <thead>
+                                        <tr>
+                                            <th class="bd-table-title" scope="col" colspan="6">云麓谷信息技术中心<span
+                                                    id="span-assess-month">九</span>月员工个人绩效考核表
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="col">姓名</th>
+                                            <td>
+                                                <span id="span-assess-name">白云舒</span>
+                                            </td>
+                                            <th scope="col">部门</th>
+                                            <td>
+                                                <span id="span-assess-dep">研发部</span>
+                                            </td>
+                                            <th scope="col">日期</th>
+                                            <td>
+                                                <span id="span-assess-date">2018-10-18</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>常规<br>
+                                                工作
+                                            </th>
+                                            <td colspan="5">
+                                                <textarea id="ta-assess-regular" rows="6"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">计划外<br>
+                                                工作
+                                            </th>
+                                            <td colspan="5">
+                                                <textarea id="ta-assess-out" rows="6"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">其它<br>
+                                                加班
+                                            </th>
+                                            <td colspan="5">
+                                                <textarea id="ta-assess-other" rows="6"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">其它<br>
+                                                开支
+                                            </th>
+                                            <td colspan="5">
+                                                <textarea id="ta-assess-expanse" rows="2"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">工作<br>
+                                                计划(简)
+                                            </th>
+                                            <td colspan="5">
+                                                <textarea id="ta-assess-plan" rows="6"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" rowspan="2">部长<br>
+                                                评价
+                                            </th>
+                                            <td colspan="4" rowspan="2">
+                                                <textarea id="ta-assess-head-eva" rows="4"></textarea>
+                                            </td>
+                                            <th>
+                                                评分
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="bd-text-small" id="text-assess-head-score" type="text"
+                                                       name="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" rowspan="2">总监</br>
+                                                评价
+                                            </th>
+                                            <td colspan="4" rowspan="2">
+                                                <textarea id="ta-assess-dir-eva" rows="4"></textarea>
+                                            </td>
+                                            <th>
+                                                评分
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="bd-text-small" id="text-assess-dir-score" type="text"
+                                                       name="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">备注</th>
+                                            <td colspan="5">
+                                                <textarea id="ta-assess-remark" rows="4"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" colspan="6" style="text-align: right;">中南大学网络思想政治工作中心</th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="div-staff-assess-menu" class="col-lg-1 table-right-menu">
+                                    <input id="btn-fill-submit" class="btn btn-primary mb-3" type="button" name=""
+                                           value="提交" onclick="submitAssessment()">
+                                    <input id="btn-file-mission" class="btn btn-primary mb-3" type="button" name=""
+                                           value="上传任务文件">
+                                    <input id="btn-file-other" class="btn btn-primary mb-3" type="button" name=""
+                                           value="上传其它文件">
+                                </div>
+                                <div id="div-admin-assess-menu" class="col-lg-1 table-right-menu">
+                                    <input id="btn-eva-submit" class="btn btn-primary mb-3" type="button" name=""
+                                           value="提交" onclick="submitEva()">
+                                </div>
 
-                                    </ul>
-                                </nav>
                             </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-result" role="tabpanel" aria-labelledby="v-pills-result-tab">
-                        <div class="row">
-                            <div class="col-lg-9">
-                                <table class="table" border="1">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col" colspan="5">云麓谷信息技术中心
-                                            <span id="span-result-dep">研发部</span>
-                                            <span id="span-result-month">九</span>
-                                            月考核结果公示
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">
-                                            <span>部门</span>
-                                        </th>
-                                        <th scope="col">
-                                            <span>姓名</span>
-                                        </th>
-                                        <th scope="col">
-                                            <span>职位</span>
-                                        </th>
-                                        <th scope="col">
-                                            <span>积分</span>
-                                        </th>
-                                        <th scope="col">
-                                            <span>排名</span>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="tbody-result">
 
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-lg-2" id="div-result-public">
-                                <input id="btn-result-public" type="button" name="" value="发布" onclick="publicResult()">
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-result" role="tabpanel"
+                             aria-labelledby="v-pills-result-tab">
+                            <div class="row">
+                                <div class="col-lg-11">
+                                    <table class="table bd-table" border="1">
+                                        <thead>
+                                        <tr>
+                                            <th class="bd-table-title" scope="col" colspan="5">云麓谷信息技术中心
+                                                <span id="span-result-dep">研发部</span>
+                                                <span id="span-result-month">九</span>
+                                                月考核结果公示
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">
+                                                <span>部门</span>
+                                            </th>
+                                            <th scope="col">
+                                                <span>姓名</span>
+                                            </th>
+                                            <th scope="col">
+                                                <span>职位</span>
+                                            </th>
+                                            <th scope="col">
+                                                <span>积分</span>
+                                            </th>
+                                            <th scope="col">
+                                                <span>排名</span>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbody-result">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-1 table-right-menu" id="div-result-public">
+                                    <input id="btn-result-public" class="btn btn-primary" type="button" name=""
+                                           value="发布" onclick="publicResult()">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-plan" role="tabpanel" aria-labelledby="v-pills-plan-tab">
-                        <div class="row">
-                            <div class="col-lg-9">
-                                <table class="table" border="1">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col" colspan="8">云麓谷信息技术中心部门负责人工作计划</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <th scope="col">姓名</th>
-                                        <td>
-                                            <span id="span-plan-name">白云舒</span>
-                                        </td>
-                                        <th scope="col">部门</th>
-                                        <td>
-                                            <span id="span-plan-dep">研发部</span>
-                                        </td>
-                                        <th scope="col">职务</th>
-                                        <td>
-                                            <span id="span-plan-position">小组长</span>
-                                        </td>
-                                        <th scope="col">日期</th>
-                                        <td>
-                                            <span id="span-plan-date">2018-10-18</span>
-                                        </td>
-                                    </tr>
-                                    <tbody>
-                                    <tr>
-                                        <th colspan="8">
-                                            <textarea id="ta-plan-content" rows="10"></textarea>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" colspan="6">中南大学网络思想政治工作中心</th>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-lg-2">
-                                <input id="btn-plan-submit" type="button" name="" value="提交">
+                        <div class="tab-pane fade" id="v-pills-plan" role="tabpanel" aria-labelledby="v-pills-plan-tab">
+                            <div class="row">
+                                <div class="col-lg-11">
+                                    <table class="table bd-table" border="1">
+                                        <thead>
+                                        <tr>
+                                            <th class="bd-table-title" scope="col" colspan="8">云麓谷信息技术中心部门负责人工作计划</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="col">姓名</th>
+                                            <td>
+                                                <span id="span-plan-name">白云舒</span>
+                                            </td>
+                                            <th scope="col">部门</th>
+                                            <td>
+                                                <span id="span-plan-dep">研发部</span>
+                                            </td>
+                                            <th scope="col">职务</th>
+                                            <td>
+                                                <span id="span-plan-position">小组长</span>
+                                            </td>
+                                            <th scope="col">日期</th>
+                                            <td>
+                                                <span id="span-plan-date">2018-10-18</span>
+                                            </td>
+                                        </tr>
+                                        <tbody>
+                                        <tr>
+                                            <th colspan="8">
+                                                <textarea id="ta-plan-content" rows="30"></textarea>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" colspan="8" style="text-align: right;">中南大学网络思想政治工作中心</th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="div-plan-staff-menu" class="col-lg-1 table-right-menu">
+                                    <input id="btn-plan-submit" class="btn btn-primary" type="button" name=""
+                                           value="提交" onclick="submitPlan()">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-viewPlan" role="tabpanel"
-                         aria-labelledby="v-pills-viewPlan-tab">审阅计划
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-register" role="tabpanel"
-                         aria-labelledby="v-pills-register-tab">
-                        <div class="container">
-                            <h5>人员注册</h5>
+                        <div class="tab-pane fade" id="v-pills-modify" role="tabpanel"
+                             aria-labelledby="v-pills-modify-tab">
+                            <h5>修改密码</h5>
                             <form>
                                 <div class="form-group row ml-1">
-                                    <label class="col-form-label mr-3">学号</label>
+                                    <label for="text-modify-old" class="col-form-label mr-3">原始密码</label>
                                     <div class="">
-                                        <input type="text" class="form-control" id="text-batch-id">
+                                        <input type="text" class="form-control" id="text-modify-old">
                                     </div>
                                 </div>
                                 <div class="form-group row ml-1">
-                                    <label class="col-form-label mr-3">姓名</label>
+                                    <label for="pwd-modify-new" class="col-form-label mr-3">新置密码</label>
                                     <div class="">
-                                        <input type="text" class="form-control" id="text-batch-name">
+                                        <input type="password" class="form-control" id="pwd-modify-new">
                                     </div>
                                 </div>
                                 <div class="form-group row ml-1">
-                                    <label class="col-form-label mr-3">部门</label>
-                                    <select class="custom-select" id="sel-batch-dep">
-                                        <option selected>选择部门</option>
-                                        <option value="1">中心</option>
-                                        <option value="2">研发</option>
-                                        <option value="3">网络</option>
-                                        <option value="4">美工</option>
-                                    </select>
-                                </div>
-                                <div class="form-group row ml-1">
-                                    <label class="col-form-label mr-3">职位</label>
-                                    <select class="custom-select" id="sel-batch-pos">
-                                        <option selected>选择职位</option>
-                                        <option value="1">指导老师</option>
-                                        <option value="2">总监</option>
-                                        <option value="3">部长</option>
-                                        <option value="4">副部长</option>
-                                        <option value="5">小组长</option>
-                                        <option value="6">员工</option>
-                                    </select>
+                                    <label for="pwd-modify-confirm" class="col-form-label mr-3">确认密码</label>
+                                    <div class="">
+                                        <input type="password" class="form-control" id="pwd-modify-confirm">
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="button" value="个人注册" onclick="singleRegister()">
-                                </div>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="excel-file" onclick="chooseXLSX()">
-                                    <label class="custom-file-label" for="excel-file">Choose file</label>
+                                    <input class="btn btn-primary" type="button" value="确认修改"
+                                           onclick="modifyPwd()">
                                 </div>
                             </form>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-backstage" role="tabpanel"
-                         aria-labelledby="v-pills-backstage-tab">
-                        <div class="container">
-                            <h5>管理员注册</h5>
-                            <form>
-                                <div class="form-group row ml-1">
-                                    <label for="text-admin-reg-id" class="col-form-label mr-3">Id</label>
-                                    <div class="">
-                                        <input type="text" class="form-control" id="text-admin-reg-id">
+                        <div class="tab-pane fade" id="v-pills-register" role="tabpanel"
+                             aria-labelledby="v-pills-register-tab">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="tab-content mt-4" id="pills-info-tabContent">
+                                        <div class="tab-pane fade show active" id="pills-info-batch" role="tabpanel"
+                                             aria-labelledby="pills-info-batch-tab">
+                                            <h5>人员注册</h5>
+                                            <form>
+                                                <div class="form-group row ml-1">
+                                                    <label for="text-batch-id" class="col-form-label mr-3">学号</label>
+                                                    <div class="">
+                                                        <input type="text" class="form-control" id="text-batch-id">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row ml-1">
+                                                    <label for="text-batch-name" class="col-form-label mr-3">姓名</label>
+                                                    <div class="">
+                                                        <input type="text" class="form-control" id="text-batch-name">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row ml-1">
+                                                    <label for="sel-batch-dep" class="col-form-label mr-3">部门</label>
+                                                    <select class="custom-select" id="sel-batch-dep">
+                                                        <option selected>选择部门</option>
+                                                        <option value="1">中心</option>
+                                                        <option value="2">研发</option>
+                                                        <option value="3">网络</option>
+                                                        <option value="4">美工</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group row ml-1">
+                                                    <label for="sel-batch-pos" class="col-form-label mr-3">职位</label>
+                                                    <select class="custom-select" id="sel-batch-pos">
+                                                        <option selected>选择职位</option>
+                                                        <option value="1">指导老师</option>
+                                                        <option value="2">总监</option>
+                                                        <option value="3">部长</option>
+                                                        <option value="4">副部长</option>
+                                                        <option value="5">小组长</option>
+                                                        <option value="6">员工</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="btn btn-primary" type="button" value="个人注册"
+                                                           onclick="singleRegister()">
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="excel-file"
+                                                           onclick="chooseXLSX()">
+                                                    <label class="custom-file-label" for="excel-file">Choose
+                                                        file</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane fade show" id="pills-info-reset" role="tabpanel"
+                                             aria-labelledby="pills-info-reset-tab">
+                                            <h5>重置密码</h5>
+                                            <div class="form-group">
+                                                <label for="text-reset-id" class="col-form-label mr-3">学号</label>
+                                                <div>
+                                                    <input type="text" class="form-control" id="text-reset-id">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="button" class="btn btn-primary" id="btn-reset" value="确认重置" onclick="resetStaffPwd()">
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade show" id="pills-info-view" role="tabpanel"
+                                             aria-labelledby="pills-info-view-tab">
+                                            查看信息
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row ml-1">
-                                    <label for="text-admin-reg-name" class="col-form-label mr-3">姓名</label>
-                                    <div class="">
-                                        <input type="text" class="form-control" id="text-admin-reg-name">
-                                    </div>
-                                </div>
-                                <div class="form-group row ml-1">
-                                    <label for="pwd-admin-reg-pwd" class="col-form-label mr-3">密码</label>
-                                    <div class="">
-                                        <input type="password" class="form-control" id="pwd-admin-reg-pwd">
-                                    </div>
-                                </div>
-                                <div class="form-group row ml-1">
-                                    <label class="col-form-label mr-3">部门</label>
-                                    <select class="custom-select" id="sel-admin-reg-dep">
-                                        <option selected>选择部门</option>
-                                        <option value="1">中心</option>
-                                        <option value="2">研发</option>
-                                        <option value="3">网络</option>
-                                        <option value="4">美工</option>
-                                    </select>
-                                </div>
-                                <div class="form-group row ml-1">
-                                    <label class="col-form-label mr-3">职位</label>
-                                    <select class="custom-select" id="sel-admin-reg-pos">
-                                        <option selected>选择职位</option>
-                                        <option value="1">指导老师</option>
-                                        <option value="2">总监</option>
-                                        <option value="3">部长</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <input type="button" value="管理员注册" onclick="adminRegister()">
-                                </div>
-                            </form>
+                            </div>
                         </div>
+                        <div class="tab-pane fade" id="v-pills-backstage" role="tabpanel"
+                             aria-labelledby="v-pills-backstage-tab">
+                            <div class="row">
+                                <div class="tab-content mt-4" id="pills-back-tabContent">
+                                    <div class="tab-pane fade show active" id="pills-back-reg" role="tabpanel"
+                                         aria-labelledby="pills-back-reg-tab">
+                                        <h5>管理员注册</h5>
+                                        <form>
+                                            <div class="form-group row ml-1">
+                                                <label for="text-admin-reg-id" class="col-form-label mr-3">账号</label>
+                                                <div class="">
+                                                    <input type="text" class="form-control" id="text-admin-reg-id">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ml-1">
+                                                <label for="text-admin-reg-name" class="col-form-label mr-3">姓名</label>
+                                                <div class="">
+                                                    <input type="text" class="form-control" id="text-admin-reg-name">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ml-1">
+                                                <label for="pwd-admin-reg-pwd" class="col-form-label mr-3">密码</label>
+                                                <div class="">
+                                                    <input type="password" class="form-control" id="pwd-admin-reg-pwd">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ml-1">
+                                                <label class="col-form-label mr-3">部门</label>
+                                                <select class="custom-select" id="sel-admin-reg-dep">
+                                                    <option selected>选择部门</option>
+                                                    <option value="1">中心</option>
+                                                    <option value="2">研发</option>
+                                                    <option value="3">网络</option>
+                                                    <option value="4">美工</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group row ml-1">
+                                                <label class="col-form-label mr-3">职位</label>
+                                                <select class="custom-select" id="sel-admin-reg-pos">
+                                                    <option selected>选择职位</option>
+                                                    <option value="1">指导老师</option>
+                                                    <option value="2">总监</option>
+                                                    <option value="3">部长</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <input class="btn btn-primary" type="button" value="管理员注册"
+                                                       onclick="adminRegister()">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-back-setTime" role="tabpanel"
+                                         aria-labelledby="pills-back-setTime-tab">
+                                        <h5>设置考核时间</h5>
+                                        <div class="col-lg-4">
+                                            <form>
+                                                <div class="form-group row ml-1">
+                                                    <label for="text-time-year" class="col-form-label mr-3">考核年份</label>
+                                                    <div>
+                                                        <input type="text" class="form-control" id="text-time-year">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row ml-1">
+                                                    <label for="text-time-month"
+                                                           class="col-form-label mr-3">考核月份</label>
+                                                    <div>
+                                                        <input type="text" class="form-control" id="text-time-month">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row ml-1">
+                                                    <label for="text-time-month"
+                                                           class="col-form-label mr-3">上交时间</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control"
+                                                               id="text-time-start-year">
+                                                        <span class="input-group-addon">年</span>
+                                                        <input type="text" class="form-control"
+                                                               id="text-time-start-month">
+                                                        <span class="input-group-addon">月</span>
+                                                        <input type="text" class="form-control"
+                                                               id="text-time-start-day">
+                                                        <span class="input-group-addon">日</span>
+                                                        <!-- <input type="text" class="form-control" id="text-time-end-year"> -->
+                                                        <!-- <span class="input-group-addon">年</span>
+                                                        <input type="text" class="form-control" id="text-time-end-month">
+                                                        <span class="input-group-addon">月</span>
+                                                        <input type="text" class="form-control" id="text-time-end-day">
+                                                        <span class="input-group-addon">日</span> -->
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row ml-1">
+                                                    <label for="text-time-month"
+                                                           class="col-form-label mr-3">截止时间</label>
+                                                    <div class="input-group">
+                                                        <!-- <input type="text" class="form-control" id="text-time-start-year">
+                                                        <span class="input-group-addon">年</span>
+                                                        <input type="text" class="form-control" id="text-time-start-month">
+                                                        <span class="input-group-addon">月</span>
+                                                        <input type="text" class="form-control" id="text-time-start-day">
+                                                        <span class="input-group-addon">日</span> -->
+                                                        <input type="text" class="form-control" id="text-time-end-year">
+                                                        <span class="input-group-addon">年</span>
+                                                        <input type="text" class="form-control"
+                                                               id="text-time-end-month">
+                                                        <span class="input-group-addon">月</span>
+                                                        <input type="text" class="form-control" id="text-time-end-day">
+                                                        <span class="input-group-addon">日</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="btn btn-primary" type="button" value="设置考核时间"
+                                                           onclick="setAssessTime()">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-back-exportAssess" role="tabpanel"
+                                         aria-labelledby="pills-back-exportAssess-tab">
+                                        导出考核信息
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-back-exportResult" role="tabpanel"
+                                         aria-labelledby="pills-back-exportResult-tab">
+                                        导出考核结果
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-md-center">
+                            <nav class="bd-pagination mb-4" aria-label="Page navigation">
+                                <ul class="pagination" id="page-partition">
+                                    <%--<li class="page-item">--%>
+                                    <%--<a class="page-link" href="#" aria-label="Previous">--%>
+                                    <%--<span aria-hidden="true">&laquo;</span>--%>
+                                    <%--<span class="sr-only">Previous</span>--%>
+                                    <%--</a>--%>
+                                    <%--</li>--%>
+                                    <%--<li class="page-item"><a class="page-link" href="#">1</a></li>--%>
+                                    <%--<li class="page-item"><a class="page-link" href="#">2</a></li>--%>
+                                    <%--<li class="page-item"><a class="page-link" href="#">3</a></li>--%>
+                                    <%--<li class="page-item">--%>
+                                    <%--<a class="page-link" href="#" aria-label="Next">--%>
+                                    <%--<span aria-hidden="true">&raquo;</span>--%>
+                                    <%--<span class="sr-only">Next</span>--%>
+                                    <%--</a>--%>
+                                    <%--</li>--%>
+                                </ul>
+                            </nav>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div id="alert-no-record" class="alert alert-warning fade show bd-alert" role="alert">
+    <strong>Sorry, no record temporarily</strong>
+</div>
+<div id="alert-no-permission" class="alert alert-danger fade show bd-alert" role="alert">
+    <strong>Sorry, you have no permission</strong>
+</div>
+<div id="alert-result-success" class="alert alert-success fade show bd-alert" role="alert">
+    <strong>Congratulations, operated successfully</strong>
+</div>
+<div id="alert-result-fail" class="alert alert-danger fade show bd-alert" role="alert">
+    <strong>Sorry, that operation failed</strong>
+</div>
+<div id="alert-account-wrong" class="alert alert-danger fade show bd-alert" role="alert">
+    <strong>Sorry, your password is wrong</strong>
+</div>
+<div id="alert-account-empty" class="alert alert-warning fade show bd-alert" role="alert">
+    <strong>Please fulfill the input text</strong>
+</div>
+<div id="alert-account-notSame" class="alert alert-warning fade show bd-alert" role="alert">
+    <strong>please check your confirm password</strong>
 </div>
 </body>
 </html>

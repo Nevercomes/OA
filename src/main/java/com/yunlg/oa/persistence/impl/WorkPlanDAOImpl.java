@@ -7,6 +7,7 @@ import com.yunlg.oa.persistence.WorkPlanDAO;
 import com.yunlg.oa.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.PersistenceException;
@@ -34,7 +35,8 @@ public class WorkPlanDAOImpl extends AbstractDAO implements WorkPlanDAO {
         Session session = HibernateUtil.getSession();
         Transaction transaction = getTransaction(session);
         try {
-            String hql = "update WorkPlan wp set wp.content='" + workPlan.getContent() + "', wp.modifyTime=" + workPlan.getModifyTime();
+            String hql = "update WorkPlan wp set wp.content='" + workPlan.getContent() + "', wp.modifyTime=" + workPlan.getModifyTime() +
+                    " where wp.userId='" + workPlan.getUserId() + "' and wp.month=" + workPlan.getMonth();
             session.createQuery(hql).executeUpdate();
             session.flush();
             transaction.commit();
@@ -52,7 +54,9 @@ public class WorkPlanDAOImpl extends AbstractDAO implements WorkPlanDAO {
         try {
             String hql = "select new com.yunlg.oa.domain.orm.WorkPlanORM(wp, user) from WorkPlan wp, User user " +
                     "where wp.userId=user.userId and wp.userId='" + userId + "' and wp.month=" + month;
-            WorkPlanORM orm = (WorkPlanORM) session.createQuery(hql).uniqueResult();
+            Query query = session.createQuery(hql);
+            query.setMaxResults(1);
+            WorkPlanORM orm = (WorkPlanORM)query .uniqueResult();
             session.flush();
             transaction.commit();
             return orm;

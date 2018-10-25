@@ -13,7 +13,7 @@ public class AssessmentDAOImplTest {
     public void testSaveAssessment() {
         Assessment assessment = new Assessment();
         assessment.setUserId("3901170505");
-        assessment.setMonth(TimeUtil.getBeforMonth());
+        assessment.setMonth(TimeUtil.getBeforeMonth());
         assessment.setWorkRegular("今天值了一天的班");
         assessment.setWorkOutPlan("今天给cz倒茶了");
         assessment.setWorkOther("敲了10w行代码");

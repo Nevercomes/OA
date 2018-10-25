@@ -17,7 +17,7 @@ public interface AssessmentDAO {
 
     void evaluateAssessment(Assessment assessment) throws PersistenceException;
 
-    List<AssessmentORM> getResultORMList(int department, int month) throws PersistenceException;
+    List<AssessmentORM> getAssessmentORMList(int department, int month) throws PersistenceException;
 
     AssessmentORM getAssessmentORM(String userId, int month) throws PersistenceException;
 

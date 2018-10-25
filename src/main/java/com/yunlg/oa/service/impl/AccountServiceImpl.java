@@ -3,7 +3,7 @@ package com.yunlg.oa.service.impl;
 import com.yunlg.oa.domain.model.User;
 import com.yunlg.oa.domain.model.SignIn;
 import com.yunlg.oa.domain.wrapper.BatchRegister;
-import com.yunlg.oa.domain.wrapper.StaffModifyPwd;
+import com.yunlg.oa.domain.wrapper.UserModifyPwd;
 import com.yunlg.oa.domain.wrapper.UserRegister;
 import com.yunlg.oa.exception.AccountServiceException;
 import com.yunlg.oa.exception.ExceptionMessage;
@@ -38,13 +38,14 @@ public class AccountServiceImpl implements AccountService {
             if (signIn == null)
                 throw new AccountServiceException(ExceptionMessage.NOACCOUNT);
             User user = new User();
+//            password = Base64.decode(password);
             if (HashSalt.verify(signIn.getPassword(), password, signIn.getSalt()))
                 user = userDAO.getStaff(userId);
             if (user == null)
                 throw new AccountServiceException(ExceptionMessage.FALSEPASSWORD);
             return user;
-        } catch (PersistenceException pe) {
-            throw new AccountServiceException(pe);
+        } catch (PersistenceException e) {
+            throw new AccountServiceException(e);
         }
     }
 
@@ -104,7 +105,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             List<User> userList = new ArrayList<>();
             List<SignIn> signInList = new ArrayList<>();
-            for(BatchRegister batchRegister : batchRegisterList) {
+            for (BatchRegister batchRegister : batchRegisterList) {
                 User user = new User();
                 SignIn signIn = new SignIn();
                 user.setUserId(batchRegister.getUserId());
@@ -124,14 +125,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean modifyPwd(StaffModifyPwd staffModifyPwd) throws AccountServiceException {
+    public boolean modifyPwd(String userId, UserModifyPwd userModifyPwd) throws AccountServiceException {
         try {
-            SignIn signIn = signInDAO.getSignIn(staffModifyPwd.getUserId());
+            SignIn signIn = signInDAO.getSignIn(userId);
             if (signIn == null)
                 throw new AccountServiceException(ExceptionMessage.NOACCOUNT);
-            if (HashSalt.verify(signIn.getPassword(), staffModifyPwd.getOldPassword(), signIn.getSalt())) {
-                signIn.setPassword(staffModifyPwd.getNewPassword());
-                signInDAO.updateStaffSignIn(HashSalt.addSalt(signIn));
+            if (HashSalt.verify(signIn.getPassword(), userModifyPwd.getOldPassword(), signIn.getSalt())) {
+                signIn.setPassword(userModifyPwd.getNewPassword());
+                signInDAO.updateSignIn(HashSalt.addSalt(signIn));
                 return true;
             }
             return false;
@@ -162,8 +163,8 @@ public class AccountServiceImpl implements AccountService {
         try {
             SignIn signIn = new SignIn();
             signIn.setUserId(userId);
-            signIn.setPassword("yunlugu000");
-            signInDAO.updateStaffSignIn(HashSalt.addSalt(signIn));
+            signIn.setPassword("yunlugu");
+            signInDAO.updateSignIn(HashSalt.addSalt(signIn));
         } catch (PersistenceException pe) {
             throw new AccountServiceException(ExceptionMessage.NOACCOUNT, pe);
         }
@@ -187,6 +188,34 @@ public class AccountServiceImpl implements AccountService {
             return userDAO.getStaff(userId);
         } catch (PersistenceException pe) {
             throw new AccountServiceException(ExceptionMessage.NOACCOUNT, pe);
+        }
+    }
+
+    @Override
+    public List<User> getUserList(int department) throws AccountServiceException {
+        try {
+            return userDAO.getStaffList(department);
+        } catch (PersistenceException pe) {
+            throw new AccountServiceException(pe);
+        }
+    }
+
+    @Override
+    public void singleRegister(BatchRegister batchRegister) throws AccountServiceException {
+        try {
+            User user = new User();
+            SignIn signIn = new SignIn();
+            user.setUserId(batchRegister.getUserId());
+            user.setName(batchRegister.getName());
+            user.setDepartment(batchRegister.getDepartment());
+            user.setPosition(batchRegister.getPosition());
+            user.setAdmin(0);
+            signIn.setUserId(batchRegister.getUserId());
+            signIn.setPassword("yunlugu");
+            SignIn signIn1 = HashSalt.addSalt(signIn);
+            userDAO.singleSaveStaff(user, signIn);
+        } catch (PersistenceException pe) {
+            throw new AccountServiceException(ExceptionMessage.ALREADYHAVEACCOUNT, pe);
         }
     }
 }

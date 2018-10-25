@@ -2,7 +2,7 @@ package com.yunlg.oa.service;
 
 import com.yunlg.oa.domain.model.User;
 import com.yunlg.oa.domain.wrapper.BatchRegister;
-import com.yunlg.oa.domain.wrapper.StaffModifyPwd;
+import com.yunlg.oa.domain.wrapper.UserModifyPwd;
 import com.yunlg.oa.domain.wrapper.UserRegister;
 import com.yunlg.oa.exception.AccountServiceException;
 
@@ -17,7 +17,7 @@ public interface AccountService {
 
     void batchRegister(List<BatchRegister> batchRegisterList) throws AccountServiceException;
 
-    boolean modifyPwd(StaffModifyPwd staffModifyPwd) throws AccountServiceException;
+    boolean modifyPwd(String userId, UserModifyPwd userModifyPwd) throws AccountServiceException;
 
 //    boolean adminModifyPwd(AdminModifyPwd adminModifyPwd) throws AccountServiceException;
 
@@ -26,4 +26,8 @@ public interface AccountService {
 //    void forceModifyAdmin(String userId) throws AccountServiceException;
 
     User getUser(String userId) throws AccountServiceException;
+
+    List<User> getUserList(int department) throws AccountServiceException;
+
+    void singleRegister(BatchRegister batchRegister) throws AccountServiceException;
 }

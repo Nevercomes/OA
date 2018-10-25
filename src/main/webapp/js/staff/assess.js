@@ -1,18 +1,3 @@
-/***
- * assessName
- * assessDepartment
- * assessDate
- * assessWorkRegular
- * assessWorkOutPlan
- * assessWorkOther
- * assessExpanse
- * assessPlanSimple
- * assessHeadEva
- * assessHeadScore
- * assessDirectorEva
- * assessDirectorScore
- * assessRemark
- */
 var assessId;
 var userId;
 var workRegular;
@@ -26,13 +11,15 @@ var assessDirectorEva;
 var assessDirectorScore;
 var remark;
 
-// 在点进来准备填表的时候
 function fillAssessment() {
 
     console.log("fillAssessment");
-    var month = getLastMonth();
+    var month = getSelectedMonth();
+    // console.log(month);
     var requestJson = {};
     requestJson.month = month;
+
+    $('#span-assess-month').text(getCNMonth(month));
 
     $('#span-assess-name').text(getGUserName());
     $('#span-assess-dep').text(getGDepartment());
@@ -45,7 +32,8 @@ function fillAssessment() {
         method: 'get',
         data: requestJson,
         success: function (data) {
-            if (data != null) {
+            // 为什么这里不需要parseJSON呢?
+            if (data.assessment != null) {
                 var assessment = data.assessment;
                 var name = data.name;
                 var dep = data.department;
@@ -56,7 +44,7 @@ function fillAssessment() {
                 $('#ta-assess-regular').text(assessment.workRegular);
                 $('#ta-assess-out').text(assessment.workOutPlan);
                 $('#ta-assess-other').text(assessment.workOther);
-                $('#text-assess-expanse').val(assessment.workExpanse);
+                $('#ta-assess-expanse').text(assessment.workExpanse);
                 $('#ta-assess-plan').text(assessment.workPlanSimple);
                 $('#ta-assess-head-eva').text(assessment.assessHeadEva);
                 $('#text-assess-head-score').val(assessment.assessHeadScore);
@@ -70,11 +58,13 @@ function fillAssessment() {
                     $('#text-assess-dir-score').val(null);
                 }
             } else {
-
+                assessId = 0;
+                alertRecordShow();
             }
         },
         error: function (xhr) {
             // alert('error:' + JSON.stringify(xhr));
+            alertFailShow();
         }
     }).done(function (data) {
         console.log('success');
@@ -90,13 +80,14 @@ function submitAssessment() {
     workRegular = $('#ta-assess-regular').val();
     workOutPlan = $('#ta-assess-out').val();
     workOther = $('#ta-assess-other').val();
-    workExpanse = $('#text-assess-expanse').val();
+    workExpanse = $('#ta-assess-expanse').val();
     workPlanSimple = $('#ta-assess-plan').val();
     remark = $('#ta-assess-remark').val();
     assessHeadEva = null;
     assessHeadScore = null;
     assessDirectorEva = null;
     assessDirectorScore = null;
+    userId = null;
 
     var assessmentString = {
         assessId: assessId, userId: userId, workRegular: workRegular,
@@ -104,7 +95,7 @@ function submitAssessment() {
         workPlanSimple: workPlanSimple, assessHeadEva: assessHeadEva,
         assessHeadScore: assessHeadScore, assessDirectorEva: assessDirectorEva,
         assessDirectorScore: assessDirectorScore, remark: remark,
-        month: getLastMonth(), workModifyTime: null, assessModifyTime: null, submit: 1
+        month: getSelectedMonth(), workModifyTime: null, assessModifyTime: null, submit: 1
     };
     var assessmentJson = $.toJSON(assessmentString);
     uploadAssessment(assessmentJson);
@@ -118,11 +109,14 @@ function uploadAssessment(assessmentJson) {
         method: 'post',
         data: assessmentJson,
         success: function (data) {
-            // var result = data;
-            // window.alert(result.result)
+            if (data.code === 0) {
+                alertFailShow();
+            } else {
+                alertSuccessShow();
+            }
         },
         error: function (xhr) {
-            // alert('error:' + JSON.stringify(xhr));
+            alertFailShow();
         }
     }).done(function (data) {
         console.log('success');
@@ -132,6 +126,51 @@ function uploadAssessment(assessmentJson) {
         console.log('complete');
     });
 }
+
+function getCNMonth(month) {
+    switch (month) {
+        case 1:
+            return "一";
+        case 2:
+            return "二";
+        case 3:
+            return "三";
+        case 4:
+            return "四";
+        case 5:
+            return "五";
+        case 6:
+            return "六";
+        case 7:
+            return "七";
+        case 8:
+            return "八";
+        case 9:
+            return "九";
+        case 10:
+            return "十";
+        case 11:
+            return "十一";
+        case 12:
+            return "十二";
+    }
+}
+
+/***
+ * assessName
+ * assessDepartment
+ * assessDate
+ * assessWorkRegular
+ * assessWorkOutPlan
+ * assessWorkOther
+ * assessExpanse
+ * assessPlanSimple
+ * assessHeadEva
+ * assessHeadScore
+ * assessDirectorEva
+ * assessDirectorScore
+ * assessRemark
+ */
 
 // userId = getSessionUserId();
 // requestJson.userId = userId;

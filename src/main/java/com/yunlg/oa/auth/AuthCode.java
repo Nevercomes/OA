@@ -14,7 +14,9 @@ public enum AuthCode {
     AA1006("1006", "AA1006", "AA_Reset"),
 
     AA2000("2000", "AA2000", "AA_Admin_Register"),
-    AA2001("2001", "AA2001", "AA_Set_Time");
+    AA2001("2001", "AA2001", "AA_Set_Time"),
+    AA2002("2002", "AA2002", "AA_Export_Assess_Info"),
+    AA2003("2003", "AA2003", "AA_Export_Assess_Result");
 
     /**权限标识 */
     private String authId;

@@ -4,7 +4,7 @@ function viewPlan() {
 
     console.log("viewPlan");
     var requestJson = {};
-    requestJson.month = getLastMonth();
+    requestJson.month = getSelectedMonth();
 
     $('#span-plan-name').text(getGUserName());
     $('#span-plan-dep').text(getGDepartment());
@@ -18,7 +18,11 @@ function viewPlan() {
         method: 'get',
         data: requestJson,
         success: function (data) {
-            if (data != null) {
+            // console.log(data != null);
+            // data = $.parseJSON(data); // 这里我parse它就报错...
+            if(data.code === 0) {
+                alertFailShow();
+            } else if (data.workPlan != null) {
                 var workPlan = data.workPlan;
                 var name = data.name;
                 var dep = data.department;
@@ -31,10 +35,12 @@ function viewPlan() {
                 $('#ta-plan-content').text(workPlan.content);
             } else {
                 planId = 0;
+                alertRecordShow();
             }
         },
         error: function (xhr) {
             // alert('error:' + JSON.stringify(xhr));
+            alertFailShow();
         }
     }).done(function (data) {
         console.log('success');
@@ -47,8 +53,8 @@ function viewPlan() {
 
 function submitPlan() {
     var content = $('#ta-plan-content').val();
-    var planJson = {planId: planId, content:content, userId: null, month:null,  modifyTime:null };
-    planJson = $.toJSON(planJson);
+    var planJson = {planId: planId, content:content, userId: null, month:getSelectedMonth(),  modifyTime:null };
+    planJson = $.toJSON(planJson); // waiting to confirm
     uploadPlan(planJson);
 }
 
@@ -60,11 +66,14 @@ function uploadPlan(planJson) {
         method: 'post',
         data: planJson,
         success: function (data) {
-            // var result = data;
-            // window.alert(result.result)
+            if (data.code === 0) {
+                alertFailShow();
+            } else {
+                alertSuccessShow();
+            }
         },
         error: function (xhr) {
-            // alert('error:' + JSON.stringify(xhr));
+            alertFailShow();
         }
     }).done(function (data) {
         console.log('success');

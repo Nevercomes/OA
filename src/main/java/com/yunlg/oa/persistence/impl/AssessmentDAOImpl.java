@@ -128,18 +128,26 @@ public class AssessmentDAOImpl extends AbstractDAO implements AssessmentDAO {
     }
 
     @Override
-    public List<AssessmentORM> getResultORMList(int department, int month) throws PersistenceException {
+    public List<AssessmentORM> getAssessmentORMList(int department, int month) throws PersistenceException {
         Session session = HibernateUtil.getSession();
         Transaction transaction = getTransaction(session);
         try {
+//            String hql;
+//            if(department == 0) {
+//                hql = "select new com.yunlg.oa.domain.orm.AssessmentORM(ss, staff) from Assessment ss, User staff where ss.userId=staff.userId" +
+//                " order by ss.assessHeadScore+ss.assessDirectorScore desc ";
+//            } else {
+//                hql = "select new com.yunlg.oa.domain.orm.AssessmentORM(ss, staff) " +
+//                        "from Assessment ss, User staff where ss.month=" + month + " and ss.userId=staff.userId and staff.department=" + department +
+//                " order by ss.assessHeadScore+ss.assessDirectorScore desc ";
+//            }
             String hql;
             if(department == 0) {
                 hql = "select new com.yunlg.oa.domain.orm.AssessmentORM(ss, staff) from Assessment ss, User staff where ss.userId=staff.userId" +
-                " order by ss.assessHeadScore+ss.assessDirectorScore desc ";
+                        " and ss.month=" + month;
             } else {
                 hql = "select new com.yunlg.oa.domain.orm.AssessmentORM(ss, staff) " +
-                        "from Assessment ss, User staff where ss.month=" + month + " and ss.userId=staff.userId and staff.department=" + department +
-                " order by ss.assessHeadScore+ss.assessDirectorScore desc ";
+                        "from Assessment ss, User staff where ss.month=" + month + " and ss.userId=staff.userId and staff.department=" + department;
             }
             Query query = session.createQuery(hql);
             List<AssessmentORM> ormList = query.list();

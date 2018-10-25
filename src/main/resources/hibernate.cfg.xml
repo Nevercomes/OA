@@ -38,6 +38,7 @@
         <mapping class="com.yunlg.oa.domain.model.Permission" />
         <mapping class="com.yunlg.oa.domain.model.RolePermissionMapping" />
         <mapping class="com.yunlg.oa.domain.model.UserRoleMapping" />
+        <mapping class="com.yunlg.oa.domain.model.AssessRecord" />
 
     </session-factory>
 </hibernate-configuration>

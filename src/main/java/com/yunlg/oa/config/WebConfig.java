@@ -1,6 +1,6 @@
 package com.yunlg.oa.config;
 
-import com.yunlg.oa.auth.interceptor.CommonInterceptor;
+import com.yunlg.oa.auth.interceptor.AuthInterceptor;
 import com.yunlg.oa.auth.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -61,7 +61,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/image/**")
                 .excludePathPatterns("/js/**")
                 .excludePathPatterns("/plugins/**");
-        registry.addInterceptor(new CommonInterceptor())
+        registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/css/**")
                 .excludePathPatterns("/image/**")

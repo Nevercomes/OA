@@ -1,7 +1,7 @@
 function preViewResult() {
 
     console.log("viewResult");
-    var requestJson = {department:1, month:getLastMonth()};
+    var requestJson = {department:getSelectedDep(), month:getSelectedMonth()};
     // requestJson = $.toJSON(requestJson);
 
     $.ajaxSetup({contentType: 'application/json'});
@@ -11,15 +11,16 @@ function preViewResult() {
         method: 'get',
         data: requestJson,
         success: function (data) {
-            if (data != null) {
-                for(var i=0; i<data.length; i++)
+            if (data.length > 0) {
+                for(var i=0; i<data.length; i++){
                     showResult(data[i]);
+                }
             } else {
-
+                alertRecordShow();
             }
         },
         error: function (xhr) {
-            // alert('error:' + JSON.stringify(xhr));
+            alertFailShow();
         }
     }).done(function (data) {
         console.log('success');
@@ -32,8 +33,8 @@ function preViewResult() {
 
 function publicResult() {
 
-	var dep = 1;
-	var month = getLastMonth();
+	var dep = getSelectedDep();
+	var month = getSelectedMonth();
 	var requestJson = {department:dep, month:month};
 
     $.ajaxSetup({contentType: 'application/json'});
@@ -43,11 +44,14 @@ function publicResult() {
         method: 'post',
         data: requestJson,
         success: function (data) {
-            // var result = data;
-            // window.alert(result.result)
+            if (data.code === 0) {
+                alertFailShow();
+            } else {
+                alertSuccessShow();
+            }
         },
         error: function (xhr) {
-            // alert('error:' + JSON.stringify(xhr));
+            alertFailShow();
         }
     }).done(function (data) {
         console.log('success');

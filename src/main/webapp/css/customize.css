@@ -1,0 +1,89 @@
+.bd-navbar {
+  min-height: 4rem;
+  position: sticky;
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .05), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  top: 0;    
+  z-index: 1080;
+}
+
+.bd-sidebar {
+	position: sticky;
+	top: 4rem;
+	z-index: 1000;
+	height: calc(100vh - 4rem);
+	background-color: rgb(248, 249, 250);
+
+	border-right: 1px solid rgba(0, 0, 0, .1);
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+.bd-table {
+	width: 640px;
+}
+
+.bd-table textarea {
+	width: 100%;
+	font-size: 14px;
+	border: 0px;
+}
+
+.bd-table textarea:focus {
+    outline: none !important;
+}
+
+.bd-table input[type="text"] {
+	width: 100%;
+	font-size: 14px;
+	border: 0px;
+}
+
+.bd-table input[type="text"]:focus {
+	outline: none !important;
+}
+
+.bd-table th {
+	/*text-align: center;*/
+	vertical-align: middle;
+}
+
+.bd-table td {
+	/*border: 1px solid rgb(0, 0, 0,.5);*/
+}
+
+.bd-table-title {
+	border-top: 1px solid #000 !important;
+	font-size: 20px;
+	text-align: center !important;
+}
+
+.bd-text-small {
+	/*width: 60px !important;*/
+}
+
+.bd-assess-btn {
+
+}
+
+.bd-func-bar {
+	position: sticky;
+	top: 4rem;
+}
+
+.bd-pagination {
+	
+}
+
+.table-right-menu {
+	/*margin-left: 680px;*/
+	position: fixed;
+	margin-left: 680px;
+	border-left: 1px solid rgb(0,0,0,.1)
+}
+
+.bd-alert {
+	display: none;
+	position: fixed;
+	top:12%;
+	left:43%;
+	z-index: 1020;
+}

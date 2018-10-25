@@ -1,4 +1,3 @@
-var assessmentList;
 var assessId;
 var userId;
 var workRegular;
@@ -12,10 +11,16 @@ var assessDirectorEva;
 var assessDirectorScore;
 var remark;
 
+var assessmentList;
+
 function evaAssessment() {
-	var dep = 1;
-    var month = getLastMonth();
+
+    var dep = getSelectedDep();
+    var month = getSelectedMonth();
     var requestJson = {department:dep, month:month};
+
+    dep === 0 ? $('#span-result-dep').text("") : $('#span-result-dep').text(getDepartmentStr(dep));
+    $('#span-result-month').text(getCNMonth(month));
 
     $.ajaxSetup({contentType: 'application/json'});
     $.ajax({
@@ -24,14 +29,19 @@ function evaAssessment() {
         method: 'get',
         data: requestJson,
         success: function (data) {
-            if (data != null) {
+            if (data.length > 0) {
+                console.log(data.length);
+                assessmentList = data; // waiting to confirm
+                setPagination(assessmentList.length);
                 setAssessment(0);
             } else {
-
+                $('#page-partition').hide();
+                alertRecordShow();
             }
         },
         error: function (xhr) {
             // alert('error:' + JSON.stringify(xhr));
+            alertFailShow();
         }
     }).done(function (data) {
         console.log('success');
@@ -43,9 +53,11 @@ function evaAssessment() {
 }
 
 function setAssessment(index) {
+    console.log("hello");
 	if(index >= assessmentList.length) {
-		return;
-	}
+        return;
+    }
+    // initEvaTab();
 	var assessmentWrapper = assessmentList[index];
     var name = assessmentWrapper.name;
     var dep = assessmentWrapper.department;
@@ -58,7 +70,7 @@ function setAssessment(index) {
     $('#ta-assess-regular').text(assessment.workRegular);
     $('#ta-assess-out').text(assessment.workOutPlan);
     $('#ta-assess-other').text(assessment.workOther);
-    $('#text-assess-expanse').val(assessment.workExpanse);
+    $('#ta-assess-expanse').text(assessment.workExpanse);
     $('#ta-assess-plan').text(assessment.workPlanSimple);
     $('#ta-assess-head-eva').text(assessment.assessHeadEva);
     $('#text-assess-head-score').val(assessment.assessHeadScore);
@@ -92,9 +104,9 @@ function submitEva() {
         workPlanSimple: workPlanSimple, assessHeadEva: assessHeadEva,
         assessHeadScore: assessHeadScore, assessDirectorEva: assessDirectorEva,
         assessDirectorScore: assessDirectorScore, remark: remark,
-        month: getLastMonth(), workModifyTime: null, assessModifyTime: null, submit: 1
+        month: getSelectedMonth(), workModifyTime: null, assessModifyTime: null, submit: 1
     };
-    var assessmentJson = $.toJSON(assessmentString);
+    var assessmentJson = $.toJSON(assessmentString); // waiting to confirm
     uploadEva(assessmentJson);
 }
 
@@ -106,11 +118,14 @@ function uploadEva(assessmentJson) {
         method: 'post',
         data: assessmentJson,
         success: function (data) {
-            // var result = data;
-            // window.alert(result.result)
+            if (data.code === 0) {
+                alertFailShow();
+            } else {
+                alertSuccessShow();
+            }
         },
         error: function (xhr) {
-            // alert('error:' + JSON.stringify(xhr));
+            alertFailShow();
         }
     }).done(function (data) {
         console.log('success');

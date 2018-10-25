@@ -15,7 +15,7 @@ public class UserRoleMapping {
     @Column(name = "user_role_id")
     private long userRoleId;
     @Column(name = "role_id")
-    private long RoleId;
+    private long roleId;
     @Column(name = "user_id")
     private String userId;
 }

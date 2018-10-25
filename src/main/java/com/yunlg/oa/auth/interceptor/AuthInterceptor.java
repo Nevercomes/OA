@@ -5,20 +5,25 @@ import com.yunlg.oa.auth.AuthValidate;
 import com.yunlg.oa.domain.Result;
 import com.yunlg.oa.exception.ExceptionMessage;
 import com.yunlg.oa.exception.InterceptorException;
+import com.yunlg.oa.global.Department;
+import com.yunlg.oa.persistence.InterceptorDAO;
+import com.yunlg.oa.persistence.impl.InterceptorDAOImpl;
+import com.yunlg.oa.utils.DepartmentMapping;
 import com.yunlg.oa.utils.InterceptorUtil;
-import org.springframework.core.MethodParameter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class CommonInterceptor implements HandlerInterceptor {
+public class AuthInterceptor implements HandlerInterceptor {
+
+    private InterceptorDAO interceptorDAO = new InterceptorDAOImpl();
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
@@ -63,18 +68,43 @@ public class CommonInterceptor implements HandlerInterceptor {
         String authCode = validate.value().getAuthCode();
         HttpSession session = httpServletRequest.getSession();
         String userId = (String) session.getAttribute("userId");
-        if(dep == -1) {
-            // no department restriction
-        } else {
-            // with department restriction
-        }
-        List<String> auths = new ArrayList<>(); // 模拟从缓存或者从数据库中查询出对应用户的权限
-        if (!auths.contains(authCode)) {
-            throw new InterceptorException(ExceptionMessage.NOAUTHORITY);
+        String depInSession = (String) session.getAttribute("department");
+        Department department = DepartmentMapping.getDepartment(depInSession);
+        try {
+            List<String> authCodeList = interceptorDAO.getAuthCodeList(userId);
+            if(dep == -1) { // // without department restriction 单纯的检查是否有对应的AuthCode
+                if(!authCodeList.contains(authCode)) {
+                    throw new InterceptorException(ExceptionMessage.NOAUTHORITY);
+                }
+            } else { // with department restriction
+                if(department == Department.ALL) {
+                    if(!authCodeList.contains(authCode)) {
+                        throw new InterceptorException(ExceptionMessage.NOAUTHORITY);
+                    }
+                } else { // 1.have auth code 2. check auth's dep whether is 0 3.if not 0 the judge equal
+                    if(!authCodeList.contains(authCode)) {
+                        throw new InterceptorException(ExceptionMessage.NOAUTHORITY);
+                    } else { // 大致逻辑就是要判断那个auth的dep数量，如果就是一个0，那就表示是对全体开放的，不然的他就不会是1级的auth
+                        List<Integer> depNum = interceptorDAO.getAuthDepNum(authCode);
+                        if(depNum.size()==1 && depNum.get(0)==0) {
+                            return;
+                        } else {
+                            if(dep != DepartmentMapping.getDepartmentCode(department))
+                                throw new InterceptorException(ExceptionMessage.NOAUTHORITY);
+                        }
+                    }
+                }
+            }
+        } catch (PersistenceException pe) {
+            throw new InterceptorException(pe);
         }
     }
 }
 
+//    List<String> auths = new ArrayList<>(); // 模拟从缓存或者从数据库中查询出对应用户的权限
+//        if (!auths.contains(authCode)) {
+//            throw new InterceptorException(ExceptionMessage.NOAUTHORITY);
+//        }
 //        HandlerMethod handlerMethod = (HandlerMethod) handler;
 //        MethodParameter[] methodParameters = handlerMethod.getMethodParameters();
 //        for (MethodParameter methodParameter : methodParameters) {

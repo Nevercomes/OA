@@ -12,4 +12,8 @@ public interface UserDAO {
     void batchSaveStaff(List<User> userList, List<SignIn> signInList) throws PersistenceException;
 
     void saveAdmin(User user, SignIn signIn) throws PersistenceException;
+
+    List<User> getStaffList(int department) throws PersistenceException;
+
+    void singleSaveStaff(User user, SignIn signIn) throws PersistenceException;
 }

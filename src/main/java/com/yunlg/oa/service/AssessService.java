@@ -1,5 +1,6 @@
 package com.yunlg.oa.service;
 
+import com.yunlg.oa.domain.model.AssessRecord;
 import com.yunlg.oa.domain.model.AssessResult;
 import com.yunlg.oa.domain.model.Assessment;
 import com.yunlg.oa.domain.wrapper.ResultWrapper;
@@ -27,4 +28,9 @@ public interface AssessService {
 
     List<List<ResultWrapper>> getResultLists(int department, int month) throws AssessServiceException;
 
+    AssessRecord getAssessTime() throws AssessServiceException;
+
+    void setAssessTime(AssessRecord assessRecord) throws AssessServiceException;
+
+    List<List<ResultWrapper>> getResultListsByStaff(int department, int month) throws AssessServiceException;
 }

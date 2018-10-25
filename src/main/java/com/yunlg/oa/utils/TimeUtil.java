@@ -56,7 +56,7 @@ public class TimeUtil {
         return calendar.get(Calendar.MONTH) + 1;
     }
 
-    public static int getBeforMonth() {
+    public static int getBeforeMonth() {
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH);
         return month==0 ? 12 : month;

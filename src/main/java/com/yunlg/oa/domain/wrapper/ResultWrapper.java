@@ -7,6 +7,6 @@ public class ResultWrapper {
     private String department;
     private String staffName;
     private String position;
-    private float score;
+    private int score;
     private int rank;
 }

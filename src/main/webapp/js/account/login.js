@@ -1,8 +1,3 @@
-var sessionUserId;
-var sessionName;
-var sessionDepartment;
-var sessionPosition;
-
 function f() {
     var a = $(".logo").outerHeight();
     var b = $(".board").outerHeight();
@@ -12,8 +7,8 @@ function f() {
     var d = $(".username").outerWidth();
     var e = $(".ico").outerWidth(true);
     var f = d - e;
-    document.getElementById("input1").style.width = f + "px";
-    document.getElementById("input2").style.width = f + "px";
+    document.getElementById("text-login-id").style.width = f + "px";
+    document.getElementById("pwd-login").style.width = f + "px";
 
     setTimeout("f()", 100);
 }
@@ -38,25 +33,21 @@ function putong()
     $("#b_p").addClass("rec_y");
 }
 
-function getSession() {
-    var userId = $("#userId").val();
+function login() {
+    var userId = $('#text-login-id').val();
+    var password = $('#pwd-login').val();
+
+    var loginJson = {userId:userId, password:password};
+
     $.ajaxSetup({contentType: 'application/json'});
     $.ajax({
-        url: 'session',
-        dataType: 'text',
-        method: 'get',
-        data: userId,
+        url: 'login/do',
+        dataType: 'json',
+        method: 'post',
         async: false,
+        data: loginJson,
         success: function (data) {
-            if (data != null) {
-                var staff = JSON.parse(data);
-                sessionUserId = staff.userId;
-                sessionName = staff.name;
-                sessionDepartment = getDepartmentStr(staff.department);
-                sessionPosition = staff.position;
-            } else {
-
-            }
+            // show result
         },
         error: function (xhr) {
             // alert('error:' + JSON.stringify(xhr));
@@ -69,4 +60,40 @@ function getSession() {
         console.log('complete');
     });
 }
+
+// var sessionUserId;
+// // var sessionName;
+// // var sessionDepartment;
+// // var sessionPosition;
+// function getSession() {
+//     var userId = $("#userId").val();
+//     $.ajaxSetup({contentType: 'application/json'});
+//     $.ajax({
+//         url: 'session',
+//         dataType: 'text',
+//         method: 'get',
+//         data: userId,
+//         async: false,
+//         success: function (data) {
+//             if (data != null) {
+//                 var staff = JSON.parse(data);
+//                 sessionUserId = staff.userId;
+//                 sessionName = staff.name;
+//                 sessionDepartment = getDepartmentStr(staff.department);
+//                 sessionPosition = staff.position;
+//             } else {
+//
+//             }
+//         },
+//         error: function (xhr) {
+//             // alert('error:' + JSON.stringify(xhr));
+//         }
+//     }).done(function (data) {
+//         console.log('success');
+//     }).fail(function () {
+//         console.log('error');
+//     }).always(function () {
+//         console.log('complete');
+//     });
+// }
 

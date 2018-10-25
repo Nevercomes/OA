@@ -1,9 +1,13 @@
-
 function viewResult() {
 
     console.log("viewResult");
-    var requestJson = {department:1, month:getLastMonth()};
+    var dep = getSelectedDep();
+    var month = getSelectedMonth();
+    var requestJson = {department:dep, month:month};
     // requestJson = $.toJSON(requestJson);
+
+    dep === 0 ? $('#span-result-dep').text("") : $('#span-result-dep').text(getDepartmentStr(dep));
+    $('#span-result-month').text(getCNMonth(month));
 
     $.ajaxSetup({contentType: 'application/json'});
     $.ajax({
@@ -12,15 +16,19 @@ function viewResult() {
         method: 'get',
         data: requestJson,
         success: function (data) {
-            if (data != null) {
-                for(var i=0; i<data.length; i++)
-                showResult(data[i]);
+            if (data.length > 0) {
+                for(var i=0; i<data.length; i++) {
+                    // waiting to improve
+                    showResult(data[i]);
+                }
             } else {
-
+                // show none
+                alertRecordShow();
             }
         },
         error: function (xhr) {
             // alert('error:' + JSON.stringify(xhr));
+            alertFailShow();
         }
     }).done(function (data) {
         console.log('success');

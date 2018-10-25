@@ -1,8 +1,8 @@
 var planList;
 
 function evaPlan() {
-    var dep = 1;
-    var month = getLastMonth();
+    var dep = getSelectedDep();
+    var month = getSelectedMonth();
     var requestJson = {department:dep, month:month};
 
     $.ajaxSetup({contentType: 'application/json'});
@@ -12,15 +12,15 @@ function evaPlan() {
         method: 'get',
         data: requestJson,
         success: function (data) {
-            if (data != null) {
+            if (data.length > 0) {
                 planList = data;
                 setPlan(0);
             } else {
-                // planId = 0;
+                alertRecordShow();
             }
         },
         error: function (xhr) {
-            // alert('error:' + JSON.stringify(xhr));
+            alertFailShow();
         }
     }).done(function (data) {
         console.log('success');

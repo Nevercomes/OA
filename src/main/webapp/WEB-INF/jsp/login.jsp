@@ -15,14 +15,14 @@
 		<form action="login/do" id="form" method="post">
 			<div class="username">
 				<img src="image/person.png" alt="person" class="ico">
-				<input type="text" name="userId" placeholder="请输入账号" class="input" id="input1">
+				<input type="text" name="userId" placeholder="请输入账号" class="input" id="text-login-id">
 			</div>
 			<div class="username">
 				<img src="image/lock.png" alt="lock" class="ico">
-				<input type="password" name="password" placeholder="请输入密码" class="input" id="input2">
+				<input type="password" name="password" placeholder="请输入密码" class="input" id="pwd-login">
 			</div>
-			<div class="forget"><a style="float: right;">忘记密码</a></div>
-			<input type="submit" value="登录" class="button" onclick="getSession()">
+			<div class="forget"><a style="float: right;"></a></div>
+			<input type="submit" value="登录" class="button" >
 		</form>
 	</div>
 </body>

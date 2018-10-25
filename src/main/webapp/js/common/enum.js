@@ -9,9 +9,9 @@
 // if(typeof DEPARTMENTSTR == undefined){
     var DEPARTMENTSTR = {};
     DEPARTMENTSTR.ALL = "中心";
-    DEPARTMENTSTR.RD = "研发部";
-    DEPARTMENTSTR.NETWORKS = "网络部";
-    DEPARTMENTSTR.ART = "美工部";
+    DEPARTMENTSTR.RD = "研发";
+    DEPARTMENTSTR.NETWORKS = "网络";
+    DEPARTMENTSTR.ART = "美工";
 // }
 
 // if(typeof POSITIONCODE == undefined){
@@ -81,7 +81,30 @@ function getPositionCode(str) {
 
 function getMonthCode(str) {
     switch (str) {
-
+        case "Jan" :
+            return 1;
+        case "Feb" :
+            return 2;
+        case "Mar" :
+            return 3;
+        case "Apr" :
+            return 4;
+        case "May" :
+            return 5;
+        case "June" :
+            return 6;
+        case "July" :
+            return 7;
+        case "Aug" :
+            return 8;
+        case "Sept" :
+            return 9;
+        case "Oct" :
+            return 10;
+        case "Nov" :
+            return 11;
+        case "Dec" :
+            return 12;
     }
 }
 

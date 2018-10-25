@@ -64,7 +64,7 @@ public class LoginController {
     @AuthValidate(AuthCode.AU0000)
     public ModelAndView showHomeStaff() {
         try {
-                return new ModelAndView("start.jsp");
+                return new ModelAndView("staff.jsp");
         } catch (AccountServiceException ae) {
             throw new CatchServiceException(ae);
         }

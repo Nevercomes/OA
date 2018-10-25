@@ -29,11 +29,11 @@ public class Assessment {
     @Column(name = "assess_head_eva")
     private String assessHeadEva;
     @Column(name = "assess_head_score")
-    private float assessHeadScore;
+    private int assessHeadScore;
     @Column(name = "assess_director_eva")
     private String assessDirectorEva;
     @Column(name = "assess_director_score")
-    private float assessDirectorScore;
+    private int assessDirectorScore;
     @Column(name = "remark")
     private String remark;
     @Column(name = "month")

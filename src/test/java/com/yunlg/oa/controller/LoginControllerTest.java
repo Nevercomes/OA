@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.yunlg.oa.domain.model.User;
 import com.yunlg.oa.domain.model.SignIn;
 import com.yunlg.oa.domain.wrapper.BatchRegister;
-import com.yunlg.oa.domain.wrapper.StaffModifyPwd;
+import com.yunlg.oa.domain.wrapper.UserModifyPwd;
 import com.yunlg.oa.global.Position;
 import com.yunlg.oa.persistence.UserDAO;
 import com.yunlg.oa.persistence.SignInDAO;
@@ -115,8 +115,8 @@ public class LoginControllerTest {
         signIn1.setUserId("3901170507");
         signIn1.setPassword("123");
         signInList.add(signIn1);
-        batchRegister.setUserList(userList);
-        batchRegister.setSignInList(signInList);
+//        batchRegister.setUserList(userList);
+//        batchRegister.setSignInList(signInList);
 
         String requestJson = ow.writeValueAsString(batchRegister);
         mockMvc.perform(MockMvcRequestBuilders.post("/register/batch")
@@ -140,12 +140,12 @@ public class LoginControllerTest {
 
     @Test
     public void testModifyStaffPassword() throws Exception {
-        StaffModifyPwd staffModifyPwd = new StaffModifyPwd();
-        staffModifyPwd.setUserId("3901170506");
-        staffModifyPwd.setOldPassword("000");
-        staffModifyPwd.setNewPassword("123");
+        UserModifyPwd userModifyPwd = new UserModifyPwd();
+//        userModifyPwd.setUserId("3901170506");
+        userModifyPwd.setOldPassword("000");
+        userModifyPwd.setNewPassword("123");
 
-        String requestJson = ow.writeValueAsString(staffModifyPwd);
+        String requestJson = ow.writeValueAsString(userModifyPwd);
         mockMvc.perform(MockMvcRequestBuilders.post("/modify/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)

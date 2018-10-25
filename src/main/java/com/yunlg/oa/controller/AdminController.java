@@ -3,14 +3,16 @@ package com.yunlg.oa.controller;
 import com.yunlg.oa.auth.AuthCode;
 import com.yunlg.oa.auth.AuthValidate;
 import com.yunlg.oa.domain.Result;
+import com.yunlg.oa.domain.model.AssessRecord;
 import com.yunlg.oa.domain.model.Assessment;
-import com.yunlg.oa.domain.model.SignIn;
 import com.yunlg.oa.domain.model.User;
 import com.yunlg.oa.domain.wrapper.*;
 import com.yunlg.oa.exception.*;
+import com.yunlg.oa.global.Department;
 import com.yunlg.oa.service.AccountService;
 import com.yunlg.oa.service.AssessService;
 import com.yunlg.oa.service.WorkService;
+import com.yunlg.oa.utils.DepartmentMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping({"/admin"})
@@ -59,6 +63,17 @@ public class AdminController {
             HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
             String department = (String) session.getAttribute("department");
             assessService.evaluateAssessment(assessment, department);
+            return new ResponseEntity<>(new Result(Result.RESULT_SUCCESS), HttpStatus.OK);
+        } catch (AssessServiceException sse) {
+            throw new CatchServiceException(sse);
+        }
+    }
+
+    @RequestMapping(value = "/assess/setTime", method = RequestMethod.POST)
+    @AuthValidate(AuthCode.AA2001)
+    public ResponseEntity<Result> setAssessTime(@RequestBody AssessRecord assessRecord) {
+        try {
+            assessService.setAssessTime(assessRecord);
             return new ResponseEntity<>(new Result(Result.RESULT_SUCCESS), HttpStatus.OK);
         } catch (AssessServiceException sse) {
             throw new CatchServiceException(sse);
@@ -103,7 +118,20 @@ public class AdminController {
         }
     }
 
-    @RequestMapping(value = "account/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/account/single", method = RequestMethod.POST)
+    @AuthValidate(AuthCode.AA1000)
+    public ResponseEntity<Result> singleRegister(@RequestBody BatchRegister batchRegister) {
+        try {
+//            List<User> userList = batchRegister.getUserList();
+//            List<SignIn> signInList = batchRegister.getSignInList();
+            accountService.singleRegister(batchRegister);
+            return new ResponseEntity<>(new Result(Result.RESULT_SUCCESS), HttpStatus.OK);
+        } catch (AccountServiceException ae) {
+            throw new CatchServiceException(ae);
+        }
+    }
+
+    @RequestMapping(value = "/account/batch", method = RequestMethod.POST)
     @AuthValidate(AuthCode.AA1000)
     public ResponseEntity<Result> batchRegister(@RequestBody List<BatchRegister> batchRegisterList) {
         try {
@@ -116,13 +144,33 @@ public class AdminController {
         }
     }
 
-    @RequestMapping(value = "account/reset", method = RequestMethod.POST)
+    @RequestMapping(value = "/account/reset", method = RequestMethod.POST)
     @AuthValidate(AuthCode.AA1006)
     public ResponseEntity<Result> resetStaffPwd(
-            @RequestParam(value = "userId") String userId) {
+            @RequestBody Map<String, String> map) {
         try {
+            String userId = map.get("userId");
+            HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.getRequestAttributes())).getRequest().getSession();
+            String dep = (String) session.getAttribute("department");
+            User user = accountService.getUser(userId);
+            Department department = DepartmentMapping.getDepartment(dep);
+            int staffDep = user.getDepartment();
+            if (department.getCode()!=0 && staffDep!=department.getCode()) {
+                return new ResponseEntity<>(new Result(Result.RESULT_NO_AUTHORITY), HttpStatus.OK);
+            }
             accountService.resetStaffPwd(userId);
             return new ResponseEntity<>(new Result(Result.RESULT_SUCCESS), HttpStatus.OK);
+        } catch (AccountServiceException ae) {
+            throw new CatchServiceException(ae);
+        }
+    }
+
+    @RequestMapping(value = "/account/info")
+    public ResponseEntity<List<User>> viewStaffs(
+            @RequestParam(value = "department") int department) {
+        try {
+            List<User> userList = accountService.getUserList(department);
+            return new ResponseEntity<>(userList, HttpStatus.OK);
         } catch (AccountServiceException ae) {
             throw new CatchServiceException(ae);
         }
