@@ -3,6 +3,16 @@
 #### 项目介绍
 中南云麓谷考核系统
 
+#### Language
+- Spring MVC
+- Ajax
+- BootStrap
+
+#### Environment
+- Maven
+- IDEA
+- Tomcat 7.0
+
 #### 软件架构
 软件架构说明
 
