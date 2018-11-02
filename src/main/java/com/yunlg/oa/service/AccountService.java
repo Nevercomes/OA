@@ -17,28 +17,67 @@ public interface AccountService {
      *      userId := RESULT_WRONG_PASSWORD
      * @param userId
      * @param password
-     * @return
+     * @return User
      * @throws AccountServiceException
      */
     User userLogin(String userId, String password) throws AccountServiceException;
 
-//    Admin adminLogin(String userId, String password, String numbering) throws AccountServiceException;
-//
+    /**
+     * admin register
+     * @param userRegister
+     * @throws AccountServiceException
+     */
     void adminRegister(UserRegister userRegister) throws AccountServiceException;
 
+    /**
+     * batch register
+     * @param batchRegisterList
+     * @throws AccountServiceException
+     */
     void batchRegister(List<BatchRegister> batchRegisterList) throws AccountServiceException;
 
+    /**
+     * modify password
+     * @param userId
+     * @param userModifyPwd
+     * @return
+     * @throws AccountServiceException
+     */
     boolean modifyPwd(String userId, UserModifyPwd userModifyPwd) throws AccountServiceException;
 
-//    boolean adminModifyPwd(AdminModifyPwd adminModifyPwd) throws AccountServiceException;
-
+    /**
+     * reset staff password for admin
+     * @param userId
+     * @throws AccountServiceException
+     */
     void resetStaffPwd(String userId) throws AccountServiceException;
 
-//    void forceModifyAdmin(String userId) throws AccountServiceException;
-
+    /**
+     * get obj:User
+     * @param userId
+     * @return
+     * @throws AccountServiceException
+     */
     User getUser(String userId) throws AccountServiceException;
 
+    /**
+     * get List of obj:User
+     * @param department
+     * @return
+     * @throws AccountServiceException
+     */
     List<User> getUserList(int department) throws AccountServiceException;
 
+    /**
+     * single register for batch register
+     * @param batchRegister
+     * @throws AccountServiceException
+     */
     void singleRegister(BatchRegister batchRegister) throws AccountServiceException;
 }
+
+//    Admin adminLogin(String userId, String password, String numbering) throws AccountServiceException;
+//    boolean adminModifyPwd(AdminModifyPwd adminModifyPwd) throws AccountServiceException;
+//    void forceModifyAdmin(String userId) throws AccountServiceException;
+
+

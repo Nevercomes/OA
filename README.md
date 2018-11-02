@@ -13,6 +13,19 @@
 - IDEA
 - Tomcat 7.0
 
+#### Current Need To Do
+- solve the problem that displays the assessment result and improve its structure view
+- fix the bug of batch register in importing the excel which throws the exception of 'wrong type of file'
+- modify the assessment table according to the staff position, especially for the instructor
+- add the feature of uploading files
+- update the data enum
+- update the enum of position
+- fix the bug of pagination with its previous and next
+- Encrypted transmission
+- export the assessment info and result
+- improve the exception handler
+- add the comment to interface method
+
 #### 软件架构
 软件架构说明
 
