@@ -11,6 +11,7 @@ public class Result {
     public static final String RESULT_SUCCESS = "success";
     public static final String RESULT_ERROR = "error";
     public static final String RESULT_NO_AUTHORITY = "no authority";
+    public static final String RESULT_NO_ACCOUNT = "no account";
     public static final String RESULT_WRONG_PASSWORD = "wrong password";
 
     public Result(String result) {

@@ -9,6 +9,17 @@ import com.yunlg.oa.exception.AccountServiceException;
 import java.util.List;
 
 public interface AccountService {
+    /**
+     * Exception:
+     *  1. no account
+     *      userId := RESULT_NO_ACCOUNT
+     *  2. wrong password
+     *      userId := RESULT_WRONG_PASSWORD
+     * @param userId
+     * @param password
+     * @return
+     * @throws AccountServiceException
+     */
     User userLogin(String userId, String password) throws AccountServiceException;
 
 //    Admin adminLogin(String userId, String password, String numbering) throws AccountServiceException;

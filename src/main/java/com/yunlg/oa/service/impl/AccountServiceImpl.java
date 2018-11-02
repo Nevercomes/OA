@@ -1,5 +1,6 @@
 package com.yunlg.oa.service.impl;
 
+import com.yunlg.oa.domain.Result;
 import com.yunlg.oa.domain.model.User;
 import com.yunlg.oa.domain.model.SignIn;
 import com.yunlg.oa.domain.wrapper.BatchRegister;
@@ -35,14 +36,19 @@ public class AccountServiceImpl implements AccountService {
     public User userLogin(String userId, String password) throws AccountServiceException {
         try {
             SignIn signIn = signInDAO.getSignIn(userId);
-            if (signIn == null)
-                throw new AccountServiceException(ExceptionMessage.NOACCOUNT);
             User user = new User();
+            if (signIn == null) {
+//                throw new AccountServiceException(ExceptionMessage.NOACCOUNT);
+                user.setUserId(Result.RESULT_NO_ACCOUNT);
+                return user;
+            }
 //            password = Base64.decode(password);
-            if (HashSalt.verify(signIn.getPassword(), password, signIn.getSalt()))
+            if (HashSalt.verify(signIn.getPassword(), password, signIn.getSalt())) {
                 user = userDAO.getStaff(userId);
-            if (user == null)
-                throw new AccountServiceException(ExceptionMessage.FALSEPASSWORD);
+            } else {
+//                throw new AccountServiceException(ExceptionMessage.FALSEPASSWORD);
+                user.setUserId(Result.RESULT_WRONG_PASSWORD);
+            }
             return user;
         } catch (PersistenceException e) {
             throw new AccountServiceException(e);

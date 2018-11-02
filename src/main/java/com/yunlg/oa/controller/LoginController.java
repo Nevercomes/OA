@@ -2,6 +2,7 @@ package com.yunlg.oa.controller;
 
 import com.yunlg.oa.auth.AuthCode;
 import com.yunlg.oa.auth.AuthValidate;
+import com.yunlg.oa.domain.Result;
 import com.yunlg.oa.domain.model.User;
 import com.yunlg.oa.exception.AccountServiceException;
 import com.yunlg.oa.exception.CatchServiceException;
@@ -40,12 +41,17 @@ public class LoginController {
 
     @RequestMapping(value = "/login/do", method = RequestMethod.POST)
     @AuthValidate(AuthCode.Allow)
-    public String staffLogin(
+    public String userLogin(
             @RequestParam(value = "userId") String userId,
             @RequestParam(value = "password") String password,
             ModelMap modelMap) {
         try {
             User user = accountService.userLogin(userId, password);
+            if(user.getUserId().equals(Result.RESULT_NO_ACCOUNT)) {
+                return "login_no_account.jsp";
+            } else if(user.getUserId().equals(Result.RESULT_WRONG_PASSWORD)) {
+                return "login_error.jsp";
+            }
             modelMap.addAttribute("userId", user.getUserId());
             modelMap.addAttribute("name", user.getName());
             modelMap.addAttribute("department", DepartmentMapping.getDepartmentStr(DepartmentMapping.getDepartment(user.getDepartment())));
