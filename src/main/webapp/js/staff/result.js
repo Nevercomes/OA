@@ -16,13 +16,10 @@ function viewResult() {
         method: 'get',
         data: requestJson,
         success: function (data) {
-            if (data.length > 0) {
-                for(var i=0; i<data.length; i++) {
-                    // waiting to improve
-                    showResult(data[i]);
-                }
+            if (data.length > 0 && data[0].length > 0 || data.length === 3) {
+                console.log(data);
+                showResult(data);
             } else {
-                // show none
                 alertRecordShow();
             }
         },

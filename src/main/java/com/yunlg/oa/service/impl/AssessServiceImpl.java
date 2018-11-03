@@ -190,15 +190,20 @@ public class AssessServiceImpl implements AssessService {
     public List<List<ResultWrapper>> getResultLists(int department, int month) throws AssessServiceException {
         try {
             List<List<ResultWrapper>> lists = new ArrayList<>();
-            List<ResultWrapper> list = new ArrayList<>();
             List<List<AssessmentORM>> ormLists = assessmentDAO.getResultORMLists(department, month);
             if(ormLists == null) {
                 return new ArrayList<>();
             }
             for(int i=0; i<ormLists.size(); i++) {
+                System.out.println(ormLists.size());
                 List<AssessmentORM> ormList = ormLists.get(i);
                 int k = 0;
+                /**
+                 * 花了近两个小时找出来的bug
+                 */
+                List<ResultWrapper> list = new ArrayList<>();
                 for(AssessmentORM orm : ormList) {
+                    System.out.println(ormList.size());
                     Assessment assessment = orm.getAssessment();
                     User user = orm.getUser();
                     ResultWrapper resultWrapper = new ResultWrapper();
@@ -206,7 +211,7 @@ public class AssessServiceImpl implements AssessService {
                     resultWrapper.setDepartment(DepartmentMapping.getDepartmentStr(DepartmentMapping.getDepartment(user.getDepartment())));
                     resultWrapper.setPosition(PositionMapping.getPositionStr(PositionMapping.getPosition(user.getPosition())));
                     resultWrapper.setScore(ScoreUtil.getFinalScore(assessment.getAssessHeadScore(), assessment.getAssessDirectorScore()));
-                    resultWrapper.setRank(k++);
+                    resultWrapper.setRank(++k);
                     list.add(resultWrapper);
                 }
                 lists.add(list);

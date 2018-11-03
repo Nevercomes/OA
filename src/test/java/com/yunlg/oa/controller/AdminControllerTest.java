@@ -71,4 +71,15 @@ public class AdminControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    public void testViewResult() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/result/view")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .param("department", "0")
+                .param("month", "9"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 }

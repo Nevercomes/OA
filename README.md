@@ -14,7 +14,7 @@
 - Tomcat 7.0.4
 
 #### Current Need To Do
-- solve the problem that displays the assessment result and improve its structure view
+- solve the problem that displays the assessment result and improve its structure view / done
 - fix the bug of batch register in importing the excel which throws the exception of 'wrong type of file'
 - modify the assessment table according to the staff position, especially for the instructor
 - add the feature of uploading files

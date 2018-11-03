@@ -176,7 +176,7 @@ public class AdminController {
         }
     }
 
-    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @AuthValidate(AuthCode.AA2000)
     public ResponseEntity<Result> adminRegister(
             @RequestBody UserRegister userRegister) {

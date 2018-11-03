@@ -199,7 +199,7 @@ public class AssessmentDAOImpl extends AbstractDAO implements AssessmentDAO {
             } else {
                 for(int i=1; i<=3; i++) {
                     hql = "select new com.yunlg.oa.domain.orm.AssessmentORM(ss, staff) " +
-                            "from Assessment ss, User staff where ss.month=" + month + " and ss.userId=staff.userId and staff.department=" + department +
+                            "from Assessment ss, User staff where ss.month=" + month + " and ss.userId=staff.userId and staff.department=" + i +
                             " order by ss.assessHeadScore+ss.assessDirectorScore desc ";
                     Query query = session.createQuery(hql);
                     ormList = query.list();

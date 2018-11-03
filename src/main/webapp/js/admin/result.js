@@ -1,8 +1,13 @@
 function preViewResult() {
 
     console.log("viewResult");
-    var requestJson = {department:getSelectedDep(), month:getSelectedMonth()};
+    var dep = getSelectedDep();
+    var month = getSelectedMonth();
+    var requestJson = {department:dep, month:month};
     // requestJson = $.toJSON(requestJson);
+
+    dep === 0 ? $('#span-result-dep').text("") : $('#span-result-dep').text(getDepartmentStr(dep));
+    $('#span-result-month').text(getCNMonth(month));
 
     $.ajaxSetup({contentType: 'application/json'});
     $.ajax({
@@ -11,10 +16,9 @@ function preViewResult() {
         method: 'get',
         data: requestJson,
         success: function (data) {
-            if (data.length > 0) {
-                for(var i=0; i<data.length; i++){
-                    showResult(data[i]);
-                }
+            if (data.length > 0 && data[0].length > 0 || data.length === 3) {
+                console.log(data);
+                showResult(data);
             } else {
                 alertRecordShow();
             }

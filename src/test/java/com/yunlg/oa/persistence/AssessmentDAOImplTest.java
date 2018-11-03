@@ -1,9 +1,12 @@
 package com.yunlg.oa.persistence;
 
 import com.yunlg.oa.domain.model.Assessment;
+import com.yunlg.oa.domain.orm.AssessmentORM;
 import com.yunlg.oa.persistence.impl.AssessmentDAOImpl;
 import com.yunlg.oa.utils.TimeUtil;
 import org.junit.Test;
+
+import java.util.List;
 
 public class AssessmentDAOImplTest {
 
@@ -22,5 +25,18 @@ public class AssessmentDAOImplTest {
         assessment.setWorkModifyTime(TimeUtil.getCurrentDate());
 
         assessmentDAO.saveAssessment(assessment);
+    }
+
+    @Test
+    public void getResult() {
+        List<List<AssessmentORM>> lists = assessmentDAO.getResultORMLists(0, 9);
+        System.out.println(lists.size());
+        for(int i=0; i<lists.size(); i++) {
+            for(int j=0; j<lists.get(i).size(); j++) {
+                System.out.println(lists.get(i).size());
+                System.out.println(lists.get(i).get(j));
+            }
+            System.out.print("");
+        }
     }
 }
