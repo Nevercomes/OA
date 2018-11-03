@@ -3,6 +3,8 @@ function batchRegister() {
     if(staffList != null) {
         var staffListJson = $.toJSON(staffList); // waiting to confirm
         uploadStaffs(staffListJson);
+    } else {
+        alertFailShow();
     }
 }
 

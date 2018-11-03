@@ -15,7 +15,7 @@
 
 #### Current Need To Do
 - solve the problem that displays the assessment result and improve its structure view / done
-- fix the bug of batch register in importing the excel which throws the exception of 'wrong type of file'
+- fix the bug of batch register in importing the excel which throws the exception of 'wrong type of file' /done
 - modify the assessment table according to the staff position, especially for the instructor
 - add the feature of uploading files
 - update the data enum
@@ -33,7 +33,7 @@
 
 1. 属性名采用驼峰命名规则
 
-2. http的无状态属性要求每一次的通信都要包含完整描述这次通信的所有信息，所以每一次提交基本都要用户账号
+2. http的无状态属性要求每一次的通信都要包含完整描述这次通信的所有信息，所以每一次提交基本都要用户账号，用户账户将被保存在session中
 —— 普通用户默认为学号
 
 1. 登录

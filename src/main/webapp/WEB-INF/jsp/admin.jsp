@@ -19,8 +19,9 @@
     <link rel="stylesheet" href="<%=path%>/css/customize.css">
 
     <script src="<%=path%>/plugins/jquery/jquery-3.2.1.min.js"></script>
-    <script src="<%=path%>/bootstrap4/js/bootstrap.min.js"></script>
     <script src="<%=path%>/plugins/json/jquery.json.min.js"></script>
+    <script src="<%=path%>/plugins/js-xlsx/xlsx.full.min.js"></script>
+    <script src="<%=path%>/bootstrap4/js/bootstrap.min.js"></script>
 
     <script src="<%=path%>/js/debug.js"></script>
 
@@ -556,11 +557,14 @@
                                                     <input class="btn btn-primary" type="button" value="个人注册"
                                                            onclick="singleRegister()">
                                                 </div>
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="excel-file"
-                                                           onclick="chooseXLSX()">
-                                                    <label class="custom-file-label" for="excel-file">Choose
-                                                        file</label>
+                                                <div class="form-group">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" id="excel-file"
+                                                               onclick="chooseXLSX()">
+                                                        <label class="custom-file-label" for="excel-file">Choose
+                                                            file</label>
+                                                    </div>
+                                                    <input type="button" class="btn btn-primary mt-2" value="批量注册" onclick="batchRegister()" />
                                                 </div>
                                             </form>
                                         </div>
