@@ -11,7 +11,7 @@
 #### Environment
 - Maven
 - IDEA
-- Tomcat 7.0
+- Tomcat 7.0.4
 
 #### Current Need To Do
 - solve the problem that displays the assessment result and improve its structure view
