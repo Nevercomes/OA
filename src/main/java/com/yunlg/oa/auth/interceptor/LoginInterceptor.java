@@ -18,7 +18,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             this.userLoginValidate(httpServletRequest, httpServletResponse, handler);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             InterceptorUtil.printMessage(httpServletResponse, new Result(Result.RESULT_NO_AUTHORITY));
             return false;
         }
@@ -39,7 +39,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
             httpServletResponse.sendRedirect("/yunlg/oa/login");
-            throw new Exception();
+            throw new Exception("not login");
         }
     }
 }

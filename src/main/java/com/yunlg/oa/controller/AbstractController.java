@@ -3,6 +3,7 @@ package com.yunlg.oa.controller;
 import com.yunlg.oa.domain.Error;
 import com.yunlg.oa.exception.CatchServiceException;
 import com.yunlg.oa.exception.ServiceException;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
