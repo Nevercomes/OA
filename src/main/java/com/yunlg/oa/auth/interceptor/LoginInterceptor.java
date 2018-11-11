@@ -38,7 +38,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session = httpServletRequest.getSession();
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
-            httpServletResponse.sendRedirect("/yunlg/oa/login");
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login");
             throw new Exception("not login");
         }
     }
